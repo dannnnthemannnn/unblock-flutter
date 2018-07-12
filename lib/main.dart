@@ -1,4 +1,4 @@
-import 'package:unblock/signIn.dart';
+import 'package:unblock/login/login.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +10,7 @@ class UnBlockApp extends StatelessWidget {
     switch (settings.name) {
       case "/":
         page = new PageRouteBuilder(
-          pageBuilder: (_, __, ___) => SignIn(),
+          pageBuilder: (_, __, ___) => LogIn(),
         );
         break;
     }
