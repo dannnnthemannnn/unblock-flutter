@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/gestures.dart';
+import 'package:unblock/login/sign_up.dart';
+import 'package:unblock/login_service.dart';
 
 class LogIn extends StatefulWidget {
   @override
@@ -9,9 +12,43 @@ class LogIn extends StatefulWidget {
 class LogInState extends State<LogIn> {
   final _formKey = GlobalKey<FormState>();
 
+  final usernameOrEmailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   Widget _getBackground() {
-    return Container(
-      color: Colors.orange,
+    return Positioned(
+      top: -MediaQuery.of(context).viewInsets.bottom,
+      bottom: MediaQuery.of(context).viewInsets.bottom,
+      left: 0.0,
+      right: 0.0,
+      child: GestureDetector(
+        onTap: () {
+          print('unfocus');
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: Container(
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: Image.asset(
+              'assets/images/background.png',
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _getBackgroundDarkener() {
+    return Positioned(
+      top: -MediaQuery.of(context).viewInsets.bottom,
+      bottom: MediaQuery.of(context).viewInsets.bottom,
+      left: 0.0,
+      right: 0.0,
+      child: IgnorePointer(
+        child: Container(
+          color: const Color(0x77000000),
+        ),
+      ),
     );
   }
 
@@ -21,7 +58,7 @@ class LogInState extends State<LogIn> {
       child: FittedBox(
         fit: BoxFit.contain,
         child: Text(
-          'LOGO',
+          'UNBLOCK',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
@@ -47,6 +84,7 @@ class LogInState extends State<LogIn> {
                     // This is a bug where the input decorations use this value
                     // for border color
                     hintColor: Colors.white,
+                    primaryColor: Colors.white,
                   ),
                   child: Form(
                     key: _formKey,
@@ -54,6 +92,11 @@ class LogInState extends State<LogIn> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         TextFormField(
+                          controller: usernameOrEmailController,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                          ),
                           decoration: InputDecoration(
                             labelText: 'Username/Email',
                             labelStyle: TextStyle(
@@ -62,6 +105,12 @@ class LogInState extends State<LogIn> {
                           ),
                         ),
                         TextFormField(
+                          controller: passwordController,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                          ),
+                          obscureText: true,
                           decoration: InputDecoration(
                             labelText: 'Password',
                             labelStyle: TextStyle(
@@ -88,19 +137,23 @@ class LogInState extends State<LogIn> {
         Expanded(child: Container()),
         Expanded(
           flex: 12,
-          child: Container(
-            height: 40.0,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(50.0),
-            ),
-            child: Text(
-              'Log In',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.black,
+          child: GestureDetector(
+            onTap: () => LoginService.login(
+                usernameOrEmailController.text, passwordController.text),
+            child: Container(
+              height: 40.0,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(50.0),
+              ),
+              child: Text(
+                'Log In',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.black,
+                ),
               ),
             ),
           ),
@@ -114,9 +167,10 @@ class LogInState extends State<LogIn> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 18.0),
       child: Container(
+        height: 18.0,
         child: RichText(
           text: TextSpan(
-            children: [
+            children: <TextSpan>[
               TextSpan(
                 text: 'Don\'t have an account? ',
                 style: TextStyle(
@@ -131,6 +185,9 @@ class LogInState extends State<LogIn> {
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
+                recognizer: new TapGestureRecognizer()
+                  ..onTap = () => Navigator.push(context,
+                      PageRouteBuilder(pageBuilder: (_, __, ___) => SignUp())),
               ),
             ],
           ),
@@ -141,22 +198,25 @@ class LogInState extends State<LogIn> {
   }
 
   Widget _getLogIn() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Expanded(
-          flex: 4,
-          child: Container(),
-        ),
-        _getLogo(),
-        Expanded(
-          flex: 10,
-          child: Container(),
-        ),
-        _getLogInForm(),
-        _getLogInButton(),
-        _getSignUp(),
-      ],
+    return Positioned(
+      top: -MediaQuery.of(context).viewInsets.bottom,
+      bottom: MediaQuery.of(context).viewInsets.bottom,
+      left: 0.0,
+      right: 0.0,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Container(height: 100.0),
+          _getLogo(),
+          Expanded(
+            flex: 10,
+            child: Container(),
+          ),
+          _getLogInForm(),
+          _getLogInButton(),
+          _getSignUp(),
+        ],
+      ),
     );
   }
 
@@ -165,6 +225,7 @@ class LogInState extends State<LogIn> {
     return Stack(
       children: [
         _getBackground(),
+        _getBackgroundDarkener(),
         _getLogIn(),
       ],
     );

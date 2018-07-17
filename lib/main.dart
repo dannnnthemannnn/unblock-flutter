@@ -21,7 +21,7 @@ class UnBlockApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return WidgetsApp(
       title: 'Flutter Demo',
-      color: Colors.blue,
+      color: Colors.white,
       onGenerateRoute: _getRoute,
       initialRoute: '/',
     );
