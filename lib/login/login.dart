@@ -15,38 +15,35 @@ class LogInState extends State<LogIn> {
   final usernameOrEmailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  void attemptLogin() async {
+    bool loggedIn = await LoginService.login(
+        usernameOrEmailController.text, passwordController.text);
+
+    if (loggedIn) {
+      Navigator.pushReplacementNamed(context, "/cities");
+    }
+  }
+
   Widget _getBackground() {
     return Positioned(
-      top: -MediaQuery.of(context).viewInsets.bottom,
-      bottom: MediaQuery.of(context).viewInsets.bottom,
+      top: 0.0,
+      bottom: 0.0,
       left: 0.0,
       right: 0.0,
       child: GestureDetector(
         onTap: () {
-          print('unfocus');
           FocusScope.of(context).requestFocus(new FocusNode());
         },
         child: Container(
+          foregroundDecoration: BoxDecoration(
+            color: const Color(0x77000000),
+          ),
           child: FittedBox(
             fit: BoxFit.cover,
             child: Image.asset(
               'assets/images/background.png',
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _getBackgroundDarkener() {
-    return Positioned(
-      top: -MediaQuery.of(context).viewInsets.bottom,
-      bottom: MediaQuery.of(context).viewInsets.bottom,
-      left: 0.0,
-      right: 0.0,
-      child: IgnorePointer(
-        child: Container(
-          color: const Color(0x77000000),
         ),
       ),
     );
@@ -77,50 +74,39 @@ class LogInState extends State<LogIn> {
           Expanded(
             flex: 12,
             child: Container(
-              child: Material(
-                color: Colors.transparent,
-                child: Theme(
-                  data: ThemeData(
-                    // This is a bug where the input decorations use this value
-                    // for border color
-                    hintColor: Colors.white,
-                    primaryColor: Colors.white,
-                  ),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        TextFormField(
-                          controller: usernameOrEmailController,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                          ),
-                          decoration: InputDecoration(
-                            labelText: 'Username/Email',
-                            labelStyle: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    TextFormField(
+                      controller: usernameOrEmailController,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                      ),
+                      decoration: InputDecoration(
+                        labelText: 'Username/Email',
+                        labelStyle: TextStyle(
+                          color: Colors.white,
                         ),
-                        TextFormField(
-                          controller: passwordController,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                          ),
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            labelStyle: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    TextFormField(
+                      controller: passwordController,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                      ),
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        labelStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -138,8 +124,7 @@ class LogInState extends State<LogIn> {
         Expanded(
           flex: 12,
           child: GestureDetector(
-            onTap: () => LoginService.login(
-                usernameOrEmailController.text, passwordController.text),
+            onTap: attemptLogin,
             child: Container(
               height: 40.0,
               alignment: Alignment.center,
@@ -199,8 +184,8 @@ class LogInState extends State<LogIn> {
 
   Widget _getLogIn() {
     return Positioned(
-      top: -MediaQuery.of(context).viewInsets.bottom,
-      bottom: MediaQuery.of(context).viewInsets.bottom,
+      top: 0.0,
+      bottom: 0.0,
       left: 0.0,
       right: 0.0,
       child: Column(
@@ -222,12 +207,23 @@ class LogInState extends State<LogIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        _getBackground(),
-        _getBackgroundDarkener(),
-        _getLogIn(),
-      ],
+    return Scaffold(
+      body: ListView(
+        padding: EdgeInsets.zero,
+        reverse: true,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Stack(
+              children: [
+                _getBackground(),
+                _getLogIn(),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

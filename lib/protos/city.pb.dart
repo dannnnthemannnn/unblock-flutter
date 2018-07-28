@@ -17,6 +17,7 @@ export 'city.pbenum.dart';
 class CreateCityRequest_CreateCityInfo extends GeneratedMessage {
   static final BuilderInfo _i = new BuilderInfo('CreateCityRequest_CreateCityInfo')
     ..aOS(1, 'name')
+    ..aOS(2, 'imageFilename')
     ..hasRequiredFields = false
   ;
 
@@ -40,6 +41,11 @@ class CreateCityRequest_CreateCityInfo extends GeneratedMessage {
   set name(String v) { $_setString(0, v); }
   bool hasName() => $_has(0);
   void clearName() => clearField(1);
+
+  String get imageFilename => $_getS(1, '');
+  set imageFilename(String v) { $_setString(1, v); }
+  bool hasImageFilename() => $_has(1);
+  void clearImageFilename() => clearField(2);
 }
 
 class _ReadonlyCreateCityRequest_CreateCityInfo extends CreateCityRequest_CreateCityInfo with ReadonlyMessageMixin {}
@@ -104,6 +110,7 @@ class _ReadonlyListCitiesResponse extends ListCitiesResponse with ReadonlyMessag
 class UpdateCityInfoRequest_UpdateCityInfo extends GeneratedMessage {
   static final BuilderInfo _i = new BuilderInfo('UpdateCityInfoRequest_UpdateCityInfo')
     ..aOS(1, 'name')
+    ..aOS(2, 'imageFilename')
     ..hasRequiredFields = false
   ;
 
@@ -127,6 +134,11 @@ class UpdateCityInfoRequest_UpdateCityInfo extends GeneratedMessage {
   set name(String v) { $_setString(0, v); }
   bool hasName() => $_has(0);
   void clearName() => clearField(1);
+
+  String get imageFilename => $_getS(1, '');
+  set imageFilename(String v) { $_setString(1, v); }
+  bool hasImageFilename() => $_has(1);
+  void clearImageFilename() => clearField(2);
 }
 
 class _ReadonlyUpdateCityInfoRequest_UpdateCityInfo extends UpdateCityInfoRequest_UpdateCityInfo with ReadonlyMessageMixin {}
@@ -209,6 +221,7 @@ class City extends GeneratedMessage {
     ..e<CityStatus>(2, 'status', PbFieldType.OE, CityStatus.CITY_STATUS_UNSPECIFIED, CityStatus.valueOf, CityStatus.values)
     ..aOS(3, 'name')
     ..pp<Neighborhood>(4, 'neighborhoods', PbFieldType.PM, Neighborhood.$checkItem, Neighborhood.create)
+    ..aOS(5, 'imageFilename')
     ..hasRequiredFields = false
   ;
 
@@ -244,6 +257,11 @@ class City extends GeneratedMessage {
   void clearName() => clearField(3);
 
   List<Neighborhood> get neighborhoods => $_getList(3);
+
+  String get imageFilename => $_getS(4, '');
+  set imageFilename(String v) { $_setString(4, v); }
+  bool hasImageFilename() => $_has(4);
+  void clearImageFilename() => clearField(5);
 }
 
 class _ReadonlyCity extends City with ReadonlyMessageMixin {}

@@ -12,6 +12,9 @@ class SignUpState extends State<SignUp> {
   Widget _getBackground() {
     return Positioned.fill(
       child: Container(
+        foregroundDecoration: BoxDecoration(
+          color: const Color(0x77000000),
+        ),
         child: FittedBox(
           fit: BoxFit.cover,
           child: Image.asset(
@@ -173,12 +176,23 @@ class SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        _getBackground(),
-        _getBackgroundDarkener(),
-        _getSignUp(),
-      ],
+    return Scaffold(
+      body: ListView(
+        padding: EdgeInsets.zero,
+        reverse: true,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Stack(
+              children: [
+                _getBackground(),
+                _getSignUp(),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -11,11 +11,13 @@ class CityStatus extends ProtobufEnum {
   static const CityStatus CITY_STATUS_UNSPECIFIED = const CityStatus._(0, 'CITY_STATUS_UNSPECIFIED');
   static const CityStatus CITY_LIVE = const CityStatus._(1, 'CITY_LIVE');
   static const CityStatus CITY_DISABLED = const CityStatus._(2, 'CITY_DISABLED');
+  static const CityStatus CITY_COMING_SOON = const CityStatus._(3, 'CITY_COMING_SOON');
 
   static const List<CityStatus> values = const <CityStatus> [
     CITY_STATUS_UNSPECIFIED,
     CITY_LIVE,
     CITY_DISABLED,
+    CITY_COMING_SOON,
   ];
 
   static final Map<int, dynamic> _byValue = ProtobufEnum.initByValue(values);

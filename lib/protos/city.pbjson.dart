@@ -9,6 +9,7 @@ const CityStatus$json = const {
     const {'1': 'CITY_STATUS_UNSPECIFIED', '2': 0},
     const {'1': 'CITY_LIVE', '2': 1},
     const {'1': 'CITY_DISABLED', '2': 2},
+    const {'1': 'CITY_COMING_SOON', '2': 3},
   ],
 };
 
@@ -24,6 +25,7 @@ const CreateCityRequest_CreateCityInfo$json = const {
   '1': 'CreateCityInfo',
   '2': const [
     const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
+    const {'1': 'imageFilename', '3': 2, '4': 1, '5': 9, '10': 'imageFilename'},
   ],
 };
 
@@ -47,6 +49,7 @@ const UpdateCityInfoRequest_UpdateCityInfo$json = const {
   '1': 'UpdateCityInfo',
   '2': const [
     const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
+    const {'1': 'imageFilename', '3': 2, '4': 1, '5': 9, '10': 'imageFilename'},
   ],
 };
 
@@ -65,6 +68,7 @@ const City$json = const {
     const {'1': 'status', '3': 2, '4': 1, '5': 14, '6': '.com.unblock.proto.CityStatus', '10': 'status'},
     const {'1': 'name', '3': 3, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'neighborhoods', '3': 4, '4': 3, '5': 11, '6': '.com.unblock.proto.Neighborhood', '10': 'neighborhoods'},
+    const {'1': 'imageFilename', '3': 5, '4': 1, '5': 9, '10': 'imageFilename'},
   ],
 };
 

@@ -1,16 +1,23 @@
 import 'package:unblock/login/login.dart';
+import 'package:unblock/cities/cities.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(new UnBlockApp());
+void main() => runApp(new UnblockApp());
 
-class UnBlockApp extends StatelessWidget {
+class UnblockApp extends StatelessWidget {
+
   Route _getRoute(RouteSettings settings) {
     Route page;
     switch (settings.name) {
       case "/":
-        page = new PageRouteBuilder(
+        page = PageRouteBuilder(
           pageBuilder: (_, __, ___) => LogIn(),
+        );
+        break;
+      case "/cities":
+        page = PageRouteBuilder(
+          pageBuilder: (_, __, ___) => Cities(),
         );
         break;
     }
@@ -19,8 +26,14 @@ class UnBlockApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WidgetsApp(
+    return MaterialApp(
       title: 'Flutter Demo',
+      theme: ThemeData(
+        // This is a bug where the input decorations use this value
+        // for border color
+        hintColor: Colors.white,
+        primaryColor: Colors.white,
+      ),
       color: Colors.white,
       onGenerateRoute: _getRoute,
       initialRoute: '/',
