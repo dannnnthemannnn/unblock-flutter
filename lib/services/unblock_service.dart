@@ -29,8 +29,8 @@ class UnblockService {
     throw HttpException('List cities failed');
   }
 
-  static Image getStaticImage(String path ) {
+  static String getStaticImagePath(String path ) {
     print('path' + path);
-    return Image.network('$unblockUrl/static/images/$path');
+    return '$unblockUrl/static/images/$path';
   }
 }

@@ -33,15 +33,17 @@ class _CitiesState extends State<Cities> {
     print(_cities.where((city) => city.imageFilename.isNotEmpty));
 
     // Keep loading until all the network images are loaded
-    Future.wait(_getCitiesToDisplay().map((city) {
-      Completer image = Completer();
-      UnblockService
-          .getStaticImage(city.imageFilename)
-          .image
-          .resolve(ImageConfiguration())
-            ..addListener((_, __) => image.complete());
-      return image.future;
-    })).then((_) => setState(() => _loading = false));
+    Future
+        .wait(_getCitiesToDisplay().map((city) {
+          Completer image = Completer();
+          Image
+              .network(UnblockService.getStaticImagePath(city.imageFilename))
+              .image
+              .resolve(ImageConfiguration())
+                ..addListener((_, __) => image.complete());
+          return image.future;
+        }))
+        .then((_) => setState(() => _loading = false));
   }
 
   List<City> _getCitiesToDisplay() {
@@ -89,6 +91,7 @@ class _CitiesState extends State<Cities> {
             children: <Widget>[
               Container(
                 height: 130.0,
+                width: double.infinity,
                 foregroundDecoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -102,7 +105,9 @@ class _CitiesState extends State<Cities> {
                 ),
                 child: FittedBox(
                   fit: BoxFit.cover,
-                  child: UnblockService.getStaticImage(city.imageFilename),
+                  child: Image.network(
+                    UnblockService.getStaticImagePath(city.imageFilename),
+                  ),
                 ),
               ),
               Positioned.fill(
