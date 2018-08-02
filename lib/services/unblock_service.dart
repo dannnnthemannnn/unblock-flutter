@@ -13,8 +13,7 @@ class UnblockService {
   static const String unblockUrl = 'https://unblock-backend.herokuapp.com';
 
   static Future<List<City>> getCities() async {
-    http.Response response = await http
-        .get(
+    http.Response response = await http.get(
       '$unblockUrl/v1/cities',
       headers: {
         HttpHeaders.AUTHORIZATION: LoginService.authToken,
@@ -29,8 +28,8 @@ class UnblockService {
     throw HttpException('List cities failed');
   }
 
-  static String getStaticImagePath(String path ) {
+  static Image getStaticImage(String path) {
     print('path' + path);
-    return '$unblockUrl/static/images/$path';
+    return Image.network('$unblockUrl/static/images/$path');
   }
 }

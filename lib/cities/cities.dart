@@ -36,8 +36,8 @@ class _CitiesState extends State<Cities> {
     Future
         .wait(_getCitiesToDisplay().map((city) {
           Completer image = Completer();
-          Image
-              .network(UnblockService.getStaticImagePath(city.imageFilename))
+          UnblockService
+              .getStaticImage(city.imageFilename)
               .image
               .resolve(ImageConfiguration())
                 ..addListener((_, __) => image.complete());
@@ -105,9 +105,7 @@ class _CitiesState extends State<Cities> {
                 ),
                 child: FittedBox(
                   fit: BoxFit.cover,
-                  child: Image.network(
-                    UnblockService.getStaticImagePath(city.imageFilename),
-                  ),
+                  child: UnblockService.getStaticImage(city.imageFilename),
                 ),
               ),
               Positioned.fill(
