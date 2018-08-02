@@ -8,50 +8,16 @@ import 'dart:core' show int, bool, double, String, List, override;
 
 import 'package:protobuf/protobuf.dart';
 
+import 'point.pb.dart';
+
 import 'attraction.pbenum.dart';
 
 export 'attraction.pbenum.dart';
 
-class AttractionLocation extends GeneratedMessage {
-  static final BuilderInfo _i = new BuilderInfo('AttractionLocation')
-    ..a<double>(1, 'x', PbFieldType.OF)
-    ..a<double>(2, 'y', PbFieldType.OF)
-    ..hasRequiredFields = false
-  ;
-
-  AttractionLocation() : super();
-  AttractionLocation.fromBuffer(List<int> i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromBuffer(i, r);
-  AttractionLocation.fromJson(String i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromJson(i, r);
-  AttractionLocation clone() => new AttractionLocation()..mergeFromMessage(this);
-  BuilderInfo get info_ => _i;
-  static AttractionLocation create() => new AttractionLocation();
-  static PbList<AttractionLocation> createRepeated() => new PbList<AttractionLocation>();
-  static AttractionLocation getDefault() {
-    if (_defaultInstance == null) _defaultInstance = new _ReadonlyAttractionLocation();
-    return _defaultInstance;
-  }
-  static AttractionLocation _defaultInstance;
-  static void $checkItem(AttractionLocation v) {
-    if (v is! AttractionLocation) checkItemFailed(v, 'AttractionLocation');
-  }
-
-  double get x => $_getN(0);
-  set x(double v) { $_setFloat(0, v); }
-  bool hasX() => $_has(0);
-  void clearX() => clearField(1);
-
-  double get y => $_getN(1);
-  set y(double v) { $_setFloat(1, v); }
-  bool hasY() => $_has(1);
-  void clearY() => clearField(2);
-}
-
-class _ReadonlyAttractionLocation extends AttractionLocation with ReadonlyMessageMixin {}
-
 class CreateAttractionRequest_CreateAttractionInfo extends GeneratedMessage {
   static final BuilderInfo _i = new BuilderInfo('CreateAttractionRequest_CreateAttractionInfo')
     ..aOS(1, 'name')
-    ..a<AttractionLocation>(2, 'location', PbFieldType.OM, AttractionLocation.getDefault, AttractionLocation.create)
+    ..a<Point>(2, 'location', PbFieldType.OM, Point.getDefault, Point.create)
     ..aOS(3, 'description')
     ..aOS(4, 'googlePlaceId')
     ..hasRequiredFields = false
@@ -78,8 +44,8 @@ class CreateAttractionRequest_CreateAttractionInfo extends GeneratedMessage {
   bool hasName() => $_has(0);
   void clearName() => clearField(1);
 
-  AttractionLocation get location => $_getN(1);
-  set location(AttractionLocation v) { setField(2, v); }
+  Point get location => $_getN(1);
+  set location(Point v) { setField(2, v); }
   bool hasLocation() => $_has(1);
   void clearLocation() => clearField(2);
 
@@ -234,7 +200,7 @@ class _ReadonlyUpdateAttractionInfoRequest extends UpdateAttractionInfoRequest w
 class UpdateAttractionLocationRequest extends GeneratedMessage {
   static final BuilderInfo _i = new BuilderInfo('UpdateAttractionLocationRequest')
     ..aOS(1, 'id')
-    ..a<AttractionLocation>(2, 'location', PbFieldType.OM, AttractionLocation.getDefault, AttractionLocation.create)
+    ..a<Point>(2, 'location', PbFieldType.OM, Point.getDefault, Point.create)
     ..hasRequiredFields = false
   ;
 
@@ -259,8 +225,8 @@ class UpdateAttractionLocationRequest extends GeneratedMessage {
   bool hasId() => $_has(0);
   void clearId() => clearField(1);
 
-  AttractionLocation get location => $_getN(1);
-  set location(AttractionLocation v) { setField(2, v); }
+  Point get location => $_getN(1);
+  set location(Point v) { setField(2, v); }
   bool hasLocation() => $_has(1);
   void clearLocation() => clearField(2);
 }
@@ -346,7 +312,7 @@ class Attraction extends GeneratedMessage {
     ..aOS(3, 'blockId')
     ..aOS(4, 'name')
     ..aOS(5, 'description')
-    ..a<AttractionLocation>(6, 'location', PbFieldType.OM, AttractionLocation.getDefault, AttractionLocation.create)
+    ..a<Point>(6, 'location', PbFieldType.OM, Point.getDefault, Point.create)
     ..aOS(7, 'googlePlaceId')
     ..hasRequiredFields = false
   ;
@@ -392,8 +358,8 @@ class Attraction extends GeneratedMessage {
   bool hasDescription() => $_has(4);
   void clearDescription() => clearField(5);
 
-  AttractionLocation get location => $_getN(5);
-  set location(AttractionLocation v) { setField(6, v); }
+  Point get location => $_getN(5);
+  set location(Point v) { setField(6, v); }
   bool hasLocation() => $_has(5);
   void clearLocation() => clearField(6);
 

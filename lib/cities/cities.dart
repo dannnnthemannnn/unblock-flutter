@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
-import 'package:unblock/unblock_service.dart';
+import 'package:unblock/services/unblock_service.dart';
 import 'package:unblock/city/city_map.dart';
 import 'package:unblock/protos/city.pb.dart';
 
@@ -33,7 +33,7 @@ class _CitiesState extends State<Cities> {
     print(_cities.where((city) => city.imageFilename.isNotEmpty));
 
     // Keep loading until all the network images are loaded
-    Future.wait(_cities.map((city) {
+    Future.wait(_getCitiesToDisplay().map((city) {
       Completer image = Completer();
       UnblockService
           .getStaticImage(city.imageFilename)
@@ -42,6 +42,15 @@ class _CitiesState extends State<Cities> {
             ..addListener((_, __) => image.complete());
       return image.future;
     })).then((_) => setState(() => _loading = false));
+  }
+
+  List<City> _getCitiesToDisplay() {
+    return List<City>()
+      ..addAll(_cities.where((city) =>
+          city.imageFilename.isNotEmpty && city.status == CityStatus.CITY_LIVE))
+      ..addAll(_cities.where((city) =>
+          city.imageFilename.isNotEmpty &&
+          city.status == CityStatus.CITY_COMING_SOON));
   }
 
   Widget _getBackground() {
@@ -116,20 +125,6 @@ class _CitiesState extends State<Cities> {
     );
   }
 
-  List<Widget> _getCityButtons() {
-    return List<Widget>()
-      ..addAll(_cities
-          .where((city) =>
-              city.imageFilename.isNotEmpty &&
-              city.status == CityStatus.CITY_LIVE)
-          .map(_getCityButton))
-      ..addAll(_cities
-          .where((city) =>
-              city.imageFilename.isNotEmpty &&
-              city.status == CityStatus.CITY_COMING_SOON)
-          .map(_getCityButton));
-  }
-
   Widget _getCitiesList() {
     return SafeArea(
       child: Column(
@@ -157,7 +152,7 @@ class _CitiesState extends State<Cities> {
             child: Container(
               child: ListView(
                 shrinkWrap: true,
-                children: _getCityButtons(),
+                children: _getCitiesToDisplay().map(_getCityButton).toList(),
               ),
             ),
           ),

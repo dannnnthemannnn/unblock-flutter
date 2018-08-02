@@ -6,11 +6,13 @@ import 'package:unblock/protos/login.pb.dart';
 import 'package:unblock/protos/user.pb.dart';
 
 class LoginService {
-  static const String unblockUrl = 'http://10.0.2.2:8080/v1';
+  //static const String unblockUrl = 'http://10.0.2.2:8080/v1';
+  static const String unblockUrl = 'https://unblock-backend.herokuapp.com/v1';
 
   static String authToken;
 
   static Future<bool> login(String usernameOrEmail, String password) async {
+    print('logging  in');
     LoginRequest loginRequest = LoginRequest()
       ..usernameOrEmail = usernameOrEmail
       ..password = password;

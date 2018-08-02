@@ -6,16 +6,7 @@
 const Bounds$json = const {
   '1': 'Bounds',
   '2': const [
-    const {'1': 'points', '3': 1, '4': 3, '5': 11, '6': '.com.unblock.proto.Bounds.Point', '10': 'points'},
-  ],
-  '3': const [Bounds_Point$json],
-};
-
-const Bounds_Point$json = const {
-  '1': 'Point',
-  '2': const [
-    const {'1': 'x', '3': 1, '4': 1, '5': 2, '10': 'x'},
-    const {'1': 'y', '3': 2, '4': 1, '5': 2, '10': 'y'},
+    const {'1': 'points', '3': 1, '4': 3, '5': 11, '6': '.com.unblock.proto.Point', '10': 'points'},
   ],
 };
 

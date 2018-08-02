@@ -12,14 +12,6 @@ const AttractionStatus$json = const {
   ],
 };
 
-const AttractionLocation$json = const {
-  '1': 'AttractionLocation',
-  '2': const [
-    const {'1': 'x', '3': 1, '4': 1, '5': 2, '10': 'x'},
-    const {'1': 'y', '3': 2, '4': 1, '5': 2, '10': 'y'},
-  ],
-};
-
 const CreateAttractionRequest$json = const {
   '1': 'CreateAttractionRequest',
   '2': const [
@@ -33,7 +25,7 @@ const CreateAttractionRequest_CreateAttractionInfo$json = const {
   '1': 'CreateAttractionInfo',
   '2': const [
     const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
-    const {'1': 'location', '3': 2, '4': 1, '5': 11, '6': '.com.unblock.proto.AttractionLocation', '10': 'location'},
+    const {'1': 'location', '3': 2, '4': 1, '5': 11, '6': '.com.unblock.proto.Point', '10': 'location'},
     const {'1': 'description', '3': 3, '4': 1, '5': 9, '10': 'description'},
     const {'1': 'googlePlaceId', '3': 4, '4': 1, '5': 9, '10': 'googlePlaceId'},
   ],
@@ -67,7 +59,7 @@ const UpdateAttractionLocationRequest$json = const {
   '1': 'UpdateAttractionLocationRequest',
   '2': const [
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
-    const {'1': 'location', '3': 2, '4': 1, '5': 11, '6': '.com.unblock.proto.AttractionLocation', '10': 'location'},
+    const {'1': 'location', '3': 2, '4': 1, '5': 11, '6': '.com.unblock.proto.Point', '10': 'location'},
   ],
 };
 
@@ -95,7 +87,7 @@ const Attraction$json = const {
     const {'1': 'blockId', '3': 3, '4': 1, '5': 9, '10': 'blockId'},
     const {'1': 'name', '3': 4, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'description', '3': 5, '4': 1, '5': 9, '10': 'description'},
-    const {'1': 'location', '3': 6, '4': 1, '5': 11, '6': '.com.unblock.proto.AttractionLocation', '10': 'location'},
+    const {'1': 'location', '3': 6, '4': 1, '5': 11, '6': '.com.unblock.proto.Point', '10': 'location'},
     const {'1': 'googlePlaceId', '3': 7, '4': 1, '5': 9, '10': 'googlePlaceId'},
   ],
 };

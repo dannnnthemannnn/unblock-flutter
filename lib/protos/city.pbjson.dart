@@ -61,6 +61,22 @@ const UpdateCityStatusRequest$json = const {
   ],
 };
 
+const UpdateCityCenterRequest$json = const {
+  '1': 'UpdateCityCenterRequest',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'center', '3': 2, '4': 1, '5': 11, '6': '.com.unblock.proto.Point', '10': 'center'},
+  ],
+};
+
+const UpdateCityBoundsRequest$json = const {
+  '1': 'UpdateCityBoundsRequest',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'bounds', '3': 2, '4': 1, '5': 11, '6': '.com.unblock.proto.Bounds', '10': 'bounds'},
+  ],
+};
+
 const City$json = const {
   '1': 'City',
   '2': const [
@@ -69,6 +85,8 @@ const City$json = const {
     const {'1': 'name', '3': 3, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'neighborhoods', '3': 4, '4': 3, '5': 11, '6': '.com.unblock.proto.Neighborhood', '10': 'neighborhoods'},
     const {'1': 'imageFilename', '3': 5, '4': 1, '5': 9, '10': 'imageFilename'},
+    const {'1': 'center', '3': 6, '4': 1, '5': 11, '6': '.com.unblock.proto.Point', '10': 'center'},
+    const {'1': 'bounds', '3': 7, '4': 1, '5': 11, '6': '.com.unblock.proto.Bounds', '10': 'bounds'},
   ],
 };
 

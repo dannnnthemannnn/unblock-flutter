@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:unblock/login/sign_up.dart';
-import 'package:unblock/login_service.dart';
+import 'package:unblock/services/login_service.dart';
 
 class LogIn extends StatefulWidget {
   @override

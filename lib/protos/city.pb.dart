@@ -8,6 +8,8 @@ import 'dart:core' show int, bool, double, String, List, override;
 
 import 'package:protobuf/protobuf.dart';
 
+import 'point.pb.dart';
+import 'bounds.pb.dart';
 import 'neighborhood.pb.dart';
 
 import 'city.pbenum.dart';
@@ -215,6 +217,78 @@ class UpdateCityStatusRequest extends GeneratedMessage {
 
 class _ReadonlyUpdateCityStatusRequest extends UpdateCityStatusRequest with ReadonlyMessageMixin {}
 
+class UpdateCityCenterRequest extends GeneratedMessage {
+  static final BuilderInfo _i = new BuilderInfo('UpdateCityCenterRequest')
+    ..aOS(1, 'id')
+    ..a<Point>(2, 'center', PbFieldType.OM, Point.getDefault, Point.create)
+    ..hasRequiredFields = false
+  ;
+
+  UpdateCityCenterRequest() : super();
+  UpdateCityCenterRequest.fromBuffer(List<int> i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromBuffer(i, r);
+  UpdateCityCenterRequest.fromJson(String i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromJson(i, r);
+  UpdateCityCenterRequest clone() => new UpdateCityCenterRequest()..mergeFromMessage(this);
+  BuilderInfo get info_ => _i;
+  static UpdateCityCenterRequest create() => new UpdateCityCenterRequest();
+  static PbList<UpdateCityCenterRequest> createRepeated() => new PbList<UpdateCityCenterRequest>();
+  static UpdateCityCenterRequest getDefault() {
+    if (_defaultInstance == null) _defaultInstance = new _ReadonlyUpdateCityCenterRequest();
+    return _defaultInstance;
+  }
+  static UpdateCityCenterRequest _defaultInstance;
+  static void $checkItem(UpdateCityCenterRequest v) {
+    if (v is! UpdateCityCenterRequest) checkItemFailed(v, 'UpdateCityCenterRequest');
+  }
+
+  String get id => $_getS(0, '');
+  set id(String v) { $_setString(0, v); }
+  bool hasId() => $_has(0);
+  void clearId() => clearField(1);
+
+  Point get center => $_getN(1);
+  set center(Point v) { setField(2, v); }
+  bool hasCenter() => $_has(1);
+  void clearCenter() => clearField(2);
+}
+
+class _ReadonlyUpdateCityCenterRequest extends UpdateCityCenterRequest with ReadonlyMessageMixin {}
+
+class UpdateCityBoundsRequest extends GeneratedMessage {
+  static final BuilderInfo _i = new BuilderInfo('UpdateCityBoundsRequest')
+    ..aOS(1, 'id')
+    ..a<Bounds>(2, 'bounds', PbFieldType.OM, Bounds.getDefault, Bounds.create)
+    ..hasRequiredFields = false
+  ;
+
+  UpdateCityBoundsRequest() : super();
+  UpdateCityBoundsRequest.fromBuffer(List<int> i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromBuffer(i, r);
+  UpdateCityBoundsRequest.fromJson(String i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromJson(i, r);
+  UpdateCityBoundsRequest clone() => new UpdateCityBoundsRequest()..mergeFromMessage(this);
+  BuilderInfo get info_ => _i;
+  static UpdateCityBoundsRequest create() => new UpdateCityBoundsRequest();
+  static PbList<UpdateCityBoundsRequest> createRepeated() => new PbList<UpdateCityBoundsRequest>();
+  static UpdateCityBoundsRequest getDefault() {
+    if (_defaultInstance == null) _defaultInstance = new _ReadonlyUpdateCityBoundsRequest();
+    return _defaultInstance;
+  }
+  static UpdateCityBoundsRequest _defaultInstance;
+  static void $checkItem(UpdateCityBoundsRequest v) {
+    if (v is! UpdateCityBoundsRequest) checkItemFailed(v, 'UpdateCityBoundsRequest');
+  }
+
+  String get id => $_getS(0, '');
+  set id(String v) { $_setString(0, v); }
+  bool hasId() => $_has(0);
+  void clearId() => clearField(1);
+
+  Bounds get bounds => $_getN(1);
+  set bounds(Bounds v) { setField(2, v); }
+  bool hasBounds() => $_has(1);
+  void clearBounds() => clearField(2);
+}
+
+class _ReadonlyUpdateCityBoundsRequest extends UpdateCityBoundsRequest with ReadonlyMessageMixin {}
+
 class City extends GeneratedMessage {
   static final BuilderInfo _i = new BuilderInfo('City')
     ..aOS(1, 'id')
@@ -222,6 +296,8 @@ class City extends GeneratedMessage {
     ..aOS(3, 'name')
     ..pp<Neighborhood>(4, 'neighborhoods', PbFieldType.PM, Neighborhood.$checkItem, Neighborhood.create)
     ..aOS(5, 'imageFilename')
+    ..a<Point>(6, 'center', PbFieldType.OM, Point.getDefault, Point.create)
+    ..a<Bounds>(7, 'bounds', PbFieldType.OM, Bounds.getDefault, Bounds.create)
     ..hasRequiredFields = false
   ;
 
@@ -262,6 +338,16 @@ class City extends GeneratedMessage {
   set imageFilename(String v) { $_setString(4, v); }
   bool hasImageFilename() => $_has(4);
   void clearImageFilename() => clearField(5);
+
+  Point get center => $_getN(5);
+  set center(Point v) { setField(6, v); }
+  bool hasCenter() => $_has(5);
+  void clearCenter() => clearField(6);
+
+  Bounds get bounds => $_getN(6);
+  set bounds(Bounds v) { setField(7, v); }
+  bool hasBounds() => $_has(6);
+  void clearBounds() => clearField(7);
 }
 
 class _ReadonlyCity extends City with ReadonlyMessageMixin {}
