@@ -12,7 +12,7 @@ class LoginService {
   static String authToken;
 
   static Future<bool> login(String usernameOrEmail, String password) async {
-    print('logging  in');
+    print('logging in');
     LoginRequest loginRequest = LoginRequest()
       ..usernameOrEmail = usernameOrEmail
       ..password = password;

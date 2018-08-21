@@ -8,6 +8,7 @@ import 'dart:core' show int, bool, double, String, List, override;
 
 import 'package:protobuf/protobuf.dart';
 
+import 'bounds.pb.dart';
 import 'block.pb.dart';
 
 import 'neighborhood.pbenum.dart';
@@ -209,6 +210,72 @@ class UpdateNeighborhoodStatusRequest extends GeneratedMessage {
 
 class _ReadonlyUpdateNeighborhoodStatusRequest extends UpdateNeighborhoodStatusRequest with ReadonlyMessageMixin {}
 
+class UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds extends GeneratedMessage {
+  static final BuilderInfo _i = new BuilderInfo('UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds')
+    ..a<Bounds>(1, 'bounds', PbFieldType.OM, Bounds.getDefault, Bounds.create)
+    ..hasRequiredFields = false
+  ;
+
+  UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds() : super();
+  UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds.fromBuffer(List<int> i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromBuffer(i, r);
+  UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds.fromJson(String i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromJson(i, r);
+  UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds clone() => new UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds()..mergeFromMessage(this);
+  BuilderInfo get info_ => _i;
+  static UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds create() => new UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds();
+  static PbList<UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds> createRepeated() => new PbList<UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds>();
+  static UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds getDefault() {
+    if (_defaultInstance == null) _defaultInstance = new _ReadonlyUpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds();
+    return _defaultInstance;
+  }
+  static UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds _defaultInstance;
+  static void $checkItem(UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds v) {
+    if (v is! UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds) checkItemFailed(v, 'UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds');
+  }
+
+  Bounds get bounds => $_getN(0);
+  set bounds(Bounds v) { setField(1, v); }
+  bool hasBounds() => $_has(0);
+  void clearBounds() => clearField(1);
+}
+
+class _ReadonlyUpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds extends UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds with ReadonlyMessageMixin {}
+
+class UpdateNeighborhoodBoundsRequest extends GeneratedMessage {
+  static final BuilderInfo _i = new BuilderInfo('UpdateNeighborhoodBoundsRequest')
+    ..aOS(1, 'id')
+    ..a<UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds>(2, 'update', PbFieldType.OM, UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds.getDefault, UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds.create)
+    ..hasRequiredFields = false
+  ;
+
+  UpdateNeighborhoodBoundsRequest() : super();
+  UpdateNeighborhoodBoundsRequest.fromBuffer(List<int> i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromBuffer(i, r);
+  UpdateNeighborhoodBoundsRequest.fromJson(String i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromJson(i, r);
+  UpdateNeighborhoodBoundsRequest clone() => new UpdateNeighborhoodBoundsRequest()..mergeFromMessage(this);
+  BuilderInfo get info_ => _i;
+  static UpdateNeighborhoodBoundsRequest create() => new UpdateNeighborhoodBoundsRequest();
+  static PbList<UpdateNeighborhoodBoundsRequest> createRepeated() => new PbList<UpdateNeighborhoodBoundsRequest>();
+  static UpdateNeighborhoodBoundsRequest getDefault() {
+    if (_defaultInstance == null) _defaultInstance = new _ReadonlyUpdateNeighborhoodBoundsRequest();
+    return _defaultInstance;
+  }
+  static UpdateNeighborhoodBoundsRequest _defaultInstance;
+  static void $checkItem(UpdateNeighborhoodBoundsRequest v) {
+    if (v is! UpdateNeighborhoodBoundsRequest) checkItemFailed(v, 'UpdateNeighborhoodBoundsRequest');
+  }
+
+  String get id => $_getS(0, '');
+  set id(String v) { $_setString(0, v); }
+  bool hasId() => $_has(0);
+  void clearId() => clearField(1);
+
+  UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds get update => $_getN(1);
+  set update(UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds v) { setField(2, v); }
+  bool hasUpdate() => $_has(1);
+  void clearUpdate() => clearField(2);
+}
+
+class _ReadonlyUpdateNeighborhoodBoundsRequest extends UpdateNeighborhoodBoundsRequest with ReadonlyMessageMixin {}
+
 class AssignNeighborhoodToCityRequest extends GeneratedMessage {
   static final BuilderInfo _i = new BuilderInfo('AssignNeighborhoodToCityRequest')
     ..aOS(1, 'id')
@@ -252,6 +319,7 @@ class Neighborhood extends GeneratedMessage {
     ..aOS(3, 'cityId')
     ..aOS(4, 'name')
     ..pp<Block>(5, 'blocks', PbFieldType.PM, Block.$checkItem, Block.create)
+    ..a<Bounds>(6, 'bounds', PbFieldType.OM, Bounds.getDefault, Bounds.create)
     ..hasRequiredFields = false
   ;
 
@@ -292,6 +360,11 @@ class Neighborhood extends GeneratedMessage {
   void clearName() => clearField(4);
 
   List<Block> get blocks => $_getList(4);
+
+  Bounds get bounds => $_getN(5);
+  set bounds(Bounds v) { setField(6, v); }
+  bool hasBounds() => $_has(5);
+  void clearBounds() => clearField(6);
 }
 
 class _ReadonlyNeighborhood extends Neighborhood with ReadonlyMessageMixin {}

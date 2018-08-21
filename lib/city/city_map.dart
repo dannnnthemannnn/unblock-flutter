@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
 
 import 'package:unblock/protos/city.pb.dart';
-import 'package:unblock/protos/point.pb.dart';
 import 'package:unblock/util/map_util.dart';
+import 'package:unblock/common/zoomable_stack.dart';
+import 'package:unblock/common/map_data.dart';
+import 'package:unblock/city/neighborhood_widget.dart';
 
 class CityMap extends StatefulWidget {
   CityMap({this.city}) : super();
@@ -21,28 +23,20 @@ class CityMap extends StatefulWidget {
 class _CityMapState extends State<CityMap> {
   static const mapsApiKey = 'AIzaSyC58Vw5LAsU1APbTdkQb3J14mMadVhx7Sc';
 
+  static const List<Color> colors = [
+    Colors.deepPurple,
+    Colors.red,
+    Colors.green,
+    Colors.blue,
+    Colors.indigo,
+    Colors.teal,
+  ];
+
+  Math.Random randomGenerator = Math.Random();
+
   StaticMapProvider mapProvider = new StaticMapProvider(mapsApiKey);
 
-  double _scale = 1.0;
-  double _currentScale = 1.0;
-  Offset _position = Offset.zero;
-  Offset _startingPosition = Offset.zero;
-  Offset _scaleCenter = Offset.zero;
-
-  @override
-  initState() {
-    super.initState();
-  }
-
-  bool _canScale(double size, double offset, double scale) {
-    double lowValue = -(size / 2) * scale + offset;
-    double highValue = (size / 2) * scale + offset;
-    print('$size $offset $scale $lowValue $highValue');
-    return lowValue <= -size / 2 && highValue >= size / 2;
-  }
-
-  String _getGoogleMapsImage(
-      BoxConstraints constraints, Point center, List<Point> bounds) {
+  MapData _getMapData(BoxConstraints constraints) {
     const int maxSize = 640;
     double screenHeight = constraints.maxHeight;
     double screenWidth = constraints.maxWidth;
@@ -53,129 +47,80 @@ class _CityMapState extends State<CityMap> {
         ? maxSize
         : (maxSize * screenWidth / screenHeight).ceil();
 
-    Math.Point centerInWorld = MapUtil.fromLatLngToPoint(widget.city.center);
+    Math.Point centerInWorld =
+        MapUtil.fromLatLngToPointProto(widget.city.center);
 
     List<Math.Point> points =
-        widget.city.bounds.points.map(MapUtil.fromLatLngToPoint).toList();
+        widget.city.bounds.points.map(MapUtil.fromLatLngToPointProto).toList();
 
-    double xZoom = Math.log((height / 2) /
+    double xZoom = Math.log((width / 2) /
             (points
                 .map((point) => (centerInWorld.x - point.x).abs())
                 .reduce(Math.max))) /
         Math.log(2);
 
-    double yZoom = Math.log((width / 2) /
+    double yZoom = Math.log((height / 2) /
             (points
                 .map((point) => (centerInWorld.y - point.y).abs())
                 .reduce(Math.max))) /
         Math.log(2);
 
-    return mapProvider
-        .getStaticUri(
-          Location(widget.city.center.x, widget.city.center.y),
-          Math.max(xZoom, yZoom).floor(),
-          height: height,
-          width: width,
-        )
-        .toString();
+    print(xZoom.toString() + ' ' + yZoom.toString());
+    return MapData(
+      zoom: Math.min(xZoom, yZoom).floor(),
+      center: Math.Point(widget.city.center.x, widget.city.center.y),
+      height: height,
+      width: width,
+    );
   }
 
-  Widget _getCityStack(BoxConstraints constraints) {
-    return Transform.translate(
-      offset: _position + _scaleCenter - _startingPosition,
-      child: Transform.scale(
-        scale: _scale * _currentScale,
-        child: GestureDetector(
-          onScaleStart: (details) {
-            setState(() {
-              _startingPosition = details.focalPoint;
-              _scaleCenter = details.focalPoint;
-            });
-          },
-          onScaleUpdate: (details) {
-            print(details);
-            setState(() {
-              _currentScale =
-                  details.scale * _scale > 1.0 ? details.scale : 1.0/_scale;
-
-              Offset newPosition =
-                  _position + details.focalPoint - _startingPosition;
-              double adjustedScale = _currentScale * _scale;
-
-              double x = details.focalPoint.dx;
-              double y = details.focalPoint.dy;
-              if (-constraints.maxWidth / 2 * adjustedScale + newPosition.dx >
-                  -constraints.maxWidth / 2) {
-                x = constraints.maxWidth / 2 * adjustedScale -
-                    constraints.maxWidth / 2 -
-                    _position.dx +
-                    _startingPosition.dx;
-              }
-              if (constraints.maxWidth / 2 * adjustedScale + newPosition.dx <
-                  constraints.maxWidth / 2) {
-                x = -constraints.maxWidth / 2 * adjustedScale +
-                    constraints.maxWidth / 2 -
-                    _position.dx +
-                    _startingPosition.dx;
-              }
-
-              if (-constraints.maxHeight / 2 * adjustedScale + newPosition.dy >
-                  -constraints.maxHeight / 2) {
-                y = constraints.maxHeight / 2 * adjustedScale -
-                    constraints.maxHeight / 2 -
-                    _position.dy +
-                    _startingPosition.dy;
-              }
-              if (constraints.maxHeight / 2 * adjustedScale + newPosition.dy <
-                  constraints.maxHeight / 2) {
-                y = -constraints.maxHeight / 2 * adjustedScale +
-                    constraints.maxHeight / 2 -
-                    _position.dy +
-                    _startingPosition.dy;
-              }
-
-              _scaleCenter = Offset(x, y);
-            });
-          },
-          onScaleEnd: (details) {
-            setState(() {
-              _scale *= _currentScale;
-              _position += _scaleCenter - _startingPosition;
-              _scaleCenter = Offset.zero;
-              _startingPosition = Offset.zero;
-              _currentScale = 1.0;
-            });
-          },
-          child: Stack(
-            children: <Widget>[
-              Positioned.fill(
-                child: Container(
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: Image.network(_getGoogleMapsImage(constraints,
-                        widget.city.center, widget.city.bounds.points)),
-                  ),
-                ),
-              ),
+  Widget _getMap(MapData mapData) {
+    return Positioned.fill(
+      child: Container(
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: Image.network(mapProvider.getStaticUri(
+            Location(mapData.center.x, mapData.center.y),
+            mapData.zoom,
+            height: mapData.height,
+            width: mapData.width,
+            mapType: StaticMapViewType.roadmap,
+            styles: [
+              'feature:poi|visibility:off',
+              'feature:administrative|visibility:off',
             ],
-          ),
+          ).toString()),
         ),
       ),
     );
   }
 
+  List<Widget> _getNeighborhoods(MapData mapData, BoxConstraints constraints) {
+    return widget.city.neighborhoods
+        .where((neighborhood) => neighborhood.bounds.points.isNotEmpty)
+        .map((neighborhood) => NeighborhoodWidget(
+              neighborhood: neighborhood,
+              mapData: mapData,
+              constraints: constraints,
+              color: colors[randomGenerator.nextInt(colors.length)],
+            ))
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: LayoutBuilder(
-        builder: (context, constraints) => Scaffold(
-              body: Stack(
-                children: <Widget>[
-                  _getCityStack(constraints),
-                ],
-              ),
-            ),
-      ),
+      child: LayoutBuilder(builder: (context, constraints) {
+        MapData mapData = _getMapData(constraints);
+
+        return Scaffold(
+          body: ZoomableStack(
+            children: [
+              _getMap(mapData),
+            ]..addAll(_getNeighborhoods(mapData, constraints)),
+          ),
+        );
+      }),
     );
   }
 }

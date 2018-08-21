@@ -59,6 +59,22 @@ const UpdateNeighborhoodStatusRequest$json = const {
   ],
 };
 
+const UpdateNeighborhoodBoundsRequest$json = const {
+  '1': 'UpdateNeighborhoodBoundsRequest',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'update', '3': 2, '4': 1, '5': 11, '6': '.com.unblock.proto.UpdateNeighborhoodBoundsRequest.UpdateNeighborhoodBounds', '10': 'update'},
+  ],
+  '3': const [UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds$json],
+};
+
+const UpdateNeighborhoodBoundsRequest_UpdateNeighborhoodBounds$json = const {
+  '1': 'UpdateNeighborhoodBounds',
+  '2': const [
+    const {'1': 'bounds', '3': 1, '4': 1, '5': 11, '6': '.com.unblock.proto.Bounds', '10': 'bounds'},
+  ],
+};
+
 const AssignNeighborhoodToCityRequest$json = const {
   '1': 'AssignNeighborhoodToCityRequest',
   '2': const [
@@ -75,6 +91,7 @@ const Neighborhood$json = const {
     const {'1': 'cityId', '3': 3, '4': 1, '5': 9, '10': 'cityId'},
     const {'1': 'name', '3': 4, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'blocks', '3': 5, '4': 3, '5': 11, '6': '.com.unblock.proto.Block', '10': 'blocks'},
+    const {'1': 'bounds', '3': 6, '4': 1, '5': 11, '6': '.com.unblock.proto.Bounds', '10': 'bounds'},
   ],
 };
 
