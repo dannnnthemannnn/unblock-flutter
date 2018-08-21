@@ -65,7 +65,6 @@ class _CityMapState extends State<CityMap> {
                 .reduce(Math.max))) /
         Math.log(2);
 
-    print(xZoom.toString() + ' ' + yZoom.toString());
     return MapData(
       zoom: Math.min(xZoom, yZoom).floor(),
       center: Math.Point(widget.city.center.x, widget.city.center.y),
@@ -107,17 +106,58 @@ class _CityMapState extends State<CityMap> {
         .toList();
   }
 
+  Rect _calculateInitialBoundingRect(MapData mapData, BoxConstraints constraints) {
+    double top = widget.city.neighborhoods
+        .map((n) => n.bounds.points
+            .map((p) =>
+                (MapUtil.fromLatLngToPointProto(p).y -
+                        MapUtil.fromLatLngToPointProto(widget.city.center).y) *
+                    Math.pow(2, mapData.zoom) +
+                mapData.height / 2)
+            .reduce(Math.min))
+        .reduce(Math.min) / mapData.height *  constraints.maxHeight;
+    double left = widget.city.neighborhoods
+        .map((n) => n.bounds.points
+            .map((p) =>
+                (MapUtil.fromLatLngToPointProto(p).x -
+                        MapUtil.fromLatLngToPointProto(widget.city.center).x) *
+                    Math.pow(2, mapData.zoom) +
+                mapData.width / 2)
+            .reduce(Math.min))
+        .reduce(Math.min) / mapData.width *  constraints.maxWidth;
+    double bottom = widget.city.neighborhoods
+        .map((n) => n.bounds.points
+            .map((p) =>
+                (MapUtil.fromLatLngToPointProto(p).y -
+                        MapUtil.fromLatLngToPointProto(widget.city.center).y) *
+                    Math.pow(2, mapData.zoom) +
+                mapData.height / 2)
+            .reduce(Math.max))
+        .reduce(Math.max) / mapData.height * constraints.maxHeight;
+    double right = widget.city.neighborhoods
+        .map((n) => n.bounds.points
+            .map((p) =>
+                (MapUtil.fromLatLngToPointProto(p).x -
+                        MapUtil.fromLatLngToPointProto(widget.city.center).x) *
+                    Math.pow(2, mapData.zoom) +
+                mapData.width / 2)
+            .reduce(Math.max))
+        .reduce(Math.max) / mapData.width * constraints.maxWidth;;
+    return Rect.fromLTRB(left, top, right, bottom);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: LayoutBuilder(builder: (context, constraints) {
         MapData mapData = _getMapData(constraints);
-
+        Rect initialPositions = _calculateInitialBoundingRect(mapData, constraints);
         return Scaffold(
           body: ZoomableStack(
             children: [
               _getMap(mapData),
             ]..addAll(_getNeighborhoods(mapData, constraints)),
+            initialRect: initialPositions,
           ),
         );
       }),
