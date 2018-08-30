@@ -3,29 +3,28 @@ import 'dart:math';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
-import 'package:unblock/protos/neighborhood.pb.dart';
-import 'package:unblock/neighborhood/neighborhood_map.dart';
+import 'package:unblock/protos/block.pb.dart';
 import 'package:unblock/util/map_util.dart';
 import 'package:unblock/common/map_data.dart';
 import 'package:unblock/common/bounds_border_painter.dart';
 import 'package:unblock/common/clip_bounds.dart';
 
-class NeighborhoodWidget extends StatelessWidget {
-  NeighborhoodWidget({
-    this.neighborhood,
+class BlockWidget extends StatelessWidget {
+  BlockWidget({
+    this.block,
     this.mapData,
     this.constraints,
     this.color,
   });
 
-  final Neighborhood neighborhood;
+  final Block block;
   final MapData mapData;
   final BoxConstraints constraints;
   final Color color;
 
   Rect _getBoundingRect() {
     List<Point> points =
-        neighborhood.bounds.points.map(MapUtil.fromLatLngToPointProto).toList();
+    block.bounds.points.map(MapUtil.fromLatLngToPointProto).toList();
     Offset minPointPixels = Offset(
         points.map((point) => point.x).reduce(min) * pow(2, mapData.zoom),
         points.map((point) => point.y).reduce(min) * pow(2, mapData.zoom));
@@ -49,13 +48,13 @@ class NeighborhoodWidget extends StatelessWidget {
   }
 
   List<Point> _getPointsInRect(Rect position) {
-    return neighborhood.bounds.points.map((p) {
+    return block.bounds.points.map((p) {
       Point centerPixels =
           MapUtil.fromLatLngToPoint(mapData.center) * pow(2, mapData.zoom);
       double scale = constraints.maxWidth / mapData.width;
       Point point = (MapUtil.fromLatLngToPointProto(p) * pow(2, mapData.zoom) -
-              centerPixels +
-              Point(mapData.width / 2, mapData.height / 2)) *
+          centerPixels +
+          Point(mapData.width / 2, mapData.height / 2)) *
           scale;
       return point - Point(position.left, position.top);
     }).toList();
@@ -63,7 +62,7 @@ class NeighborhoodWidget extends StatelessWidget {
 
   Rect _getTitleBounding(Rect boundingRect, List<Point> points) {
     if (points.length < 2) {
-      throw new Exception("Neighborhood has no bounding points");
+      throw new Exception("block has no bounding points");
     }
     double y = boundingRect.height / 2;
     List<double> intersections = [];
@@ -102,13 +101,7 @@ class NeighborhoodWidget extends StatelessWidget {
           points: pointsInRect,
         ),
         child: GestureDetector(
-          onTap: () => Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (_, __, ___) => NeighborhoodMap(
-                      neighborhood: neighborhood,
-                    ),
-              )),
+          onTap: () {},
           child: Stack(
             children: <Widget>[
               CustomPaint(
@@ -137,11 +130,11 @@ class NeighborhoodWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 0.0),
                     alignment: Alignment.center,
                     child: Text(
-                      neighborhood.name.replaceAll(' ', '\n'),
+                      block.name.replaceAll(' ', '\n'),
                       softWrap: true,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 5.0,
+                        fontSize: 12.0,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),

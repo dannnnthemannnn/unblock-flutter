@@ -30,7 +30,6 @@ class _CitiesState extends State<Cities> {
 
   void _getCities() async {
     _cities = await UnblockService.getCities();
-    print(_cities.where((city) => city.imageFilename.isNotEmpty));
 
     // Keep loading until all the network images are loaded
     Future
