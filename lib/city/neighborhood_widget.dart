@@ -67,7 +67,6 @@ class NeighborhoodWidget extends StatelessWidget {
     }
     double y = boundingRect.height / 2;
     List<double> intersections = [];
-    print(y);
     for (int i = 0; i < points.length; i++) {
       Point one = points[(i + points.length + 1) % points.length];
       Point two = points[i];

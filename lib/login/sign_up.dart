@@ -25,14 +25,6 @@ class SignUpState extends State<SignUp> {
     );
   }
 
-  Widget _getBackgroundDarkener() {
-    return Positioned.fill(
-      child: Container(
-        color: const Color(0x77000000),
-      ),
-    );
-  }
-
   Widget _getLogo() {
     return Container(
       height: 50.0,

@@ -4,23 +4,22 @@ import 'dart:ui' as ui;
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
-import 'package:unblock/protos/neighborhood.pb.dart';
+import 'package:unblock/protos/block.pb.dart';
+import 'package:unblock/block/attraction_widget.dart';
 import 'package:unblock/common/zoomable_stack.dart';
-import 'package:unblock/util/colors_util.dart';
 import 'package:unblock/common/map_data.dart';
-import 'package:unblock/neighborhood/block_widget.dart';
 import 'package:unblock/common/map_provider_service.dart';
 
-class NeighborhoodMap extends StatefulWidget {
-  NeighborhoodMap({this.neighborhood}) : super();
+class BlockMap extends StatefulWidget {
+  BlockMap({this.block}) : super();
 
-  final Neighborhood neighborhood;
+  final Block block;
 
   @override
-  createState() => _NeighborhoodMapState();
+  createState() => _BlockMapState();
 }
 
-class _NeighborhoodMapState extends State<NeighborhoodMap> {
+class _BlockMapState extends State<BlockMap> {
   static const double overlayOpacity = 0.4;
   static const double overlayPadding = 20.0;
 
@@ -45,7 +44,7 @@ class _NeighborhoodMapState extends State<NeighborhoodMap> {
               ),
               child: FittedBox(
                 child: Text(
-                  widget.neighborhood.name,
+                  widget.block.name,
                   style: TextStyle(
                     color: Colors.white,
                   ),
@@ -129,24 +128,12 @@ class _NeighborhoodMapState extends State<NeighborhoodMap> {
     );
   }
 
-  List<Widget> _getBlocks(MapData mapData, BoxConstraints constraints) {
-    return widget.neighborhood.blocks
-        .where((block) => block.bounds.points.isNotEmpty)
-        .map((block) => BlockWidget(
-              block: block,
-              mapData: mapData,
-              constraints: constraints,
-              color: ColorsUtil.getRandomColor(),
-            ))
-        .toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: LayoutBuilder(builder: (context, constraints) {
         MapData mapData = MapData(
-          bounds: widget.neighborhood.bounds,
+          bounds: widget.block.bounds,
           constraints: constraints,
         );
         Completer<ui.Image> imageCompleter = Completer();
@@ -155,10 +142,10 @@ class _NeighborhoodMapState extends State<NeighborhoodMap> {
         );
         mapImage.image.resolve(ImageConfiguration())
           ..addListener(
-              (ImageInfo image, _) => imageCompleter.complete(image.image));
+                  (ImageInfo image, _) => imageCompleter.complete(image.image));
 
         Rect initialPositions = mapData.getInitialBoundingRect(
-            widget.neighborhood.bounds.points, constraints);
+            widget.block.bounds.points, constraints);
         return Scaffold(
           body: FutureBuilder(
             future: imageCompleter.future,
@@ -171,7 +158,11 @@ class _NeighborhoodMapState extends State<NeighborhoodMap> {
                       children: [
                         _getMap(mapImage),
                         _getBackground(),
-                      ]..addAll(_getBlocks(mapData, constraints)),
+                      ]
+                        ..addAll(widget.block.attractions.map((attraction) =>
+                            AttractionWidget(attraction: attraction,
+                              constraints: constraints,
+                              mapData: mapData,))),
                       initialRect: initialPositions,
                     ),
                     _getOverlay(),

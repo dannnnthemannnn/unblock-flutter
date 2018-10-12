@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "219765494411",
+    "firebase_url": "https://probable-splice-195005.firebaseio.com",
+    "project_id": "probable-splice-195005",
+    "storage_bucket": "probable-splice-195005.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219765494411:android:564b909a9a65ad43",
+        "android_client_info": {
+          "package_name": "com.dannyfranklin.unblock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "219765494411-h1h9543967ikfl7hb5mroo4emekhqk3k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dannyfranklin.unblock",
+            "certificate_hash": "32e594e99211f1cd2e37f602dbff57aab725885f"
+          }
+        },
+        {
+          "client_id": "219765494411-6300kihflrpmv510ho2i9u00j20qans1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChnz6C-vypV-3GhrCzOqyK5YUOuUWiRpE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "219765494411-6300kihflrpmv510ho2i9u00j20qans1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "219765494411-c0sgmbf18flk959dhph9f9522ktitg6c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dannyfranklin.unblock"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

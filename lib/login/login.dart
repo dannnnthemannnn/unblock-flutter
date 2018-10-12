@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:unblock/login/sign_up.dart';
-import 'package:unblock/services/login_service.dart';
 
 class LogIn extends StatefulWidget {
   @override
@@ -15,12 +18,35 @@ class LogInState extends State<LogIn> {
   final usernameOrEmailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void attemptLogin() async {
-    bool loggedIn = await LoginService.login(
-        usernameOrEmailController.text, passwordController.text);
+  bool _loading = false;
 
-    if (loggedIn) {
-      Navigator.pushReplacementNamed(context, "/cities");
+  Future<void> _attempLoginWithFacebook() async {
+    FacebookLogin facebookLogin = FacebookLogin();
+    var result = await facebookLogin.logInWithReadPermissions([
+      'email',
+      'public_profile',
+    ]);
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        try {
+          FirebaseUser user = await FirebaseAuth.instance.signInWithFacebook(
+            accessToken: result.accessToken.token,
+          );
+          print(await user.getIdToken());
+        }
+        catch (e) {
+          print('Exception in firebase sign in');
+          print(e);
+          return;
+        }
+
+        Navigator.pushReplacementNamed(context, "/cities");
+        break;
+      case FacebookLoginStatus.error:
+        print(result.errorMessage);
+        break;
+      default:
+        break;
     }
   }
 
@@ -124,7 +150,7 @@ class LogInState extends State<LogIn> {
         Expanded(
           flex: 12,
           child: GestureDetector(
-            onTap: attemptLogin,
+            onTap: _attempLoginWithFacebook,
             child: Container(
               height: 40.0,
               alignment: Alignment.center,
@@ -205,6 +231,13 @@ class LogInState extends State<LogIn> {
     );
   }
 
+  Widget _getLoading() {
+    return Container(
+      alignment: Alignment.center,
+      child: CircularProgressIndicator(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -218,7 +251,7 @@ class LogInState extends State<LogIn> {
             child: Stack(
               children: [
                 _getBackground(),
-                _getLogIn(),
+                _loading ? _getLoading() : _getLogIn(),
               ],
             ),
           ),

@@ -21,27 +21,24 @@ class _CitiesState extends State<Cities> {
     super.initState();
 
     _getCities();
-    Future.delayed(
-        Duration(
-          seconds: 4,
-        ),
-        () => setState(() {}));
   }
 
   void _getCities() async {
+    print('getting cities');
     _cities = await UnblockService.getCities();
+    print('cities retrieved');
 
     // Keep loading until all the network images are loaded
     Future
         .wait(_getCitiesToDisplay().map((city) {
-          Completer image = Completer();
-          UnblockService
-              .getStaticImage(city.imageFilename)
-              .image
-              .resolve(ImageConfiguration())
-                ..addListener((_, __) => image.complete());
-          return image.future;
-        }))
+      Completer image = Completer();
+      UnblockService
+          .getStaticImage(city.imageFilename)
+          .image
+          .resolve(ImageConfiguration())
+        ..addListener((_, __) => image.complete());
+      return image.future;
+    }))
         .then((_) => setState(() => _loading = false));
   }
 

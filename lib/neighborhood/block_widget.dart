@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:unblock/protos/block.pb.dart';
+import 'package:unblock/block/block_map.dart';
 import 'package:unblock/util/map_util.dart';
 import 'package:unblock/common/map_data.dart';
 import 'package:unblock/common/bounds_border_painter.dart';
@@ -66,7 +67,6 @@ class BlockWidget extends StatelessWidget {
     }
     double y = boundingRect.height / 2;
     List<double> intersections = [];
-    print(y);
     for (int i = 0; i < points.length; i++) {
       Point one = points[(i + points.length + 1) % points.length];
       Point two = points[i];
@@ -101,7 +101,13 @@ class BlockWidget extends StatelessWidget {
           points: pointsInRect,
         ),
         child: GestureDetector(
-          onTap: () {},
+          onTap: () => Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => BlockMap(
+                  block: block,
+                ),
+              )),
           child: Stack(
             children: <Widget>[
               CustomPaint(

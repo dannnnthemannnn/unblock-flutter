@@ -1,4 +1,3 @@
-import 'dart:math' as Math;
 import 'dart:async';
 import 'dart:ui' as ui;
 
@@ -24,6 +23,7 @@ class CityMap extends StatefulWidget {
 class _CityMapState extends State<CityMap> {
   static const double overlayOpacity = 0.4;
   static const double overlayPadding = 20.0;
+  static const double overlayButtonSize = 50.0;
 
   Widget _getTitle() {
     return Padding(
@@ -67,12 +67,37 @@ class _CityMapState extends State<CityMap> {
       top: overlayPadding,
       left: overlayPadding,
       child: Container(
+        width: overlayButtonSize,
+        height: overlayButtonSize,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.black.withOpacity(overlayOpacity),
         ),
-        child: BackButton(
-          color: Colors.white,
+        child: FittedBox(
+          child: BackButton(
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _getCityListButton() {
+    Positioned(
+      top: overlayPadding,
+      left: overlayPadding,
+      child: Container(
+        width: overlayButtonSize,
+        height: overlayButtonSize,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.black.withOpacity(overlayOpacity),
+        ),
+        child: FittedBox(
+          child: Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -89,8 +114,27 @@ class _CityMapState extends State<CityMap> {
   }
 
   Widget _getBackground() {
-    return Container(
-      color: Colors.black.withOpacity(0.0),
+    return Positioned(
+      top: 0.0,
+      bottom: 0.0,
+      left: 0.0,
+      right: 0.0,
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: Container(
+          foregroundDecoration: BoxDecoration(
+            color: const Color(0x77000000),
+          ),
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: Image.asset(
+              'assets/images/background.png',
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -151,18 +195,23 @@ class _CityMapState extends State<CityMap> {
                       ZoomableStack(
                         children: [
                           _getMap(mapImage),
-                          _getBackground(),
                         ]..addAll(_getNeighborhoods(mapData, constraints)),
                         initialRect: initialPositions,
                       ),
                       _getOverlay(),
                       _getBackButton(),
+                      _getCityListButton(),
                     ],
                   );
                 } else {
-                  return Container(
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator(),
+                  return Stack(
+                    children: [
+                      _getBackground(),
+                      Container(
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator(),
+                      ),
+                    ],
                   );
                 }
               },
