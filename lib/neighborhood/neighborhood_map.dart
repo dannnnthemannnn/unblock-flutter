@@ -23,6 +23,7 @@ class NeighborhoodMap extends StatefulWidget {
 class _NeighborhoodMapState extends State<NeighborhoodMap> {
   static const double overlayOpacity = 0.4;
   static const double overlayPadding = 20.0;
+  static const double overlayButtonSize = 50.0;
 
   Widget _getTitle() {
     return Padding(
@@ -66,12 +67,36 @@ class _NeighborhoodMapState extends State<NeighborhoodMap> {
       top: overlayPadding,
       left: overlayPadding,
       child: Container(
+        width: overlayButtonSize,
+        height: overlayButtonSize,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.black.withOpacity(overlayOpacity),
         ),
         child: BackButton(
           color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget _getBlockListButton() {
+    return Positioned(
+      top: overlayPadding,
+      right: overlayPadding,
+      child: Container(
+        width: overlayButtonSize,
+        height: overlayButtonSize,
+        padding: const EdgeInsets.all(10.0,),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.black.withOpacity(overlayOpacity),
+        ),
+        child: FittedBox(
+          child: Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -176,6 +201,7 @@ class _NeighborhoodMapState extends State<NeighborhoodMap> {
                     ),
                     _getOverlay(),
                     _getBackButton(),
+                    _getBlockListButton(),
                   ],
                 );
               } else {

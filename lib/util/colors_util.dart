@@ -16,6 +16,6 @@ class ColorsUtil {
   static Math.Random randomGenerator = Math.Random();
 
   static Color getRandomColor() {
-    return colors[randomGenerator.nextInt(colors.length)];
+    return colors[randomGenerator.nextInt(colors.length)].withOpacity(0.6);
   }
 }

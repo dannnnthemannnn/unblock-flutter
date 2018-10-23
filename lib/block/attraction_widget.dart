@@ -13,11 +13,13 @@ class AttractionWidget extends StatelessWidget {
     this.attraction,
     this.mapData,
     this.constraints,
+    this.attractionSelectedCallback,
   });
 
   final Attraction attraction;
   final MapData mapData;
   final BoxConstraints constraints;
+  final Function attractionSelectedCallback;
 
   Point _getLocationOffset() {
     Point centerPixels =
@@ -33,16 +35,20 @@ class AttractionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(attraction);
     Point locationPixel = _getLocationOffset();
     double markerWidth = 25.0;
     return Positioned(
       left: locationPixel.x - markerWidth / 2,
       top: locationPixel.y - markerWidth,
-      child: Icon(
-        FontAwesomeIcons.mapMarkerAlt,
-        size: markerWidth,
-        color: Random().nextBool() ? Colors.green.shade900 : Colors.blueGrey,
+      child: GestureDetector(
+        onTap: () => attractionSelectedCallback(attraction),
+        child: Icon(
+          FontAwesomeIcons.mapMarkerAlt,
+          size: markerWidth,
+          color: Random().nextBool()
+              ? Colors.green.withOpacity(1.0)
+              : Colors.blueGrey,
+        ),
       ),
     );
   }

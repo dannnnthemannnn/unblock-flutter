@@ -16,16 +16,18 @@ class BlockWidget extends StatelessWidget {
     this.mapData,
     this.constraints,
     this.color,
+    this.showText = true,
   });
 
   final Block block;
   final MapData mapData;
   final BoxConstraints constraints;
   final Color color;
+  final bool showText;
 
   Rect _getBoundingRect() {
     List<Point> points =
-    block.bounds.points.map(MapUtil.fromLatLngToPointProto).toList();
+        block.bounds.points.map(MapUtil.fromLatLngToPointProto).toList();
     Offset minPointPixels = Offset(
         points.map((point) => point.x).reduce(min) * pow(2, mapData.zoom),
         points.map((point) => point.y).reduce(min) * pow(2, mapData.zoom));
@@ -54,8 +56,8 @@ class BlockWidget extends StatelessWidget {
           MapUtil.fromLatLngToPoint(mapData.center) * pow(2, mapData.zoom);
       double scale = constraints.maxWidth / mapData.width;
       Point point = (MapUtil.fromLatLngToPointProto(p) * pow(2, mapData.zoom) -
-          centerPixels +
-          Point(mapData.width / 2, mapData.height / 2)) *
+              centerPixels +
+              Point(mapData.width / 2, mapData.height / 2)) *
           scale;
       return point - Point(position.left, position.top);
     }).toList();
@@ -93,6 +95,51 @@ class BlockWidget extends StatelessWidget {
     Rect boundingRect = _getBoundingRect();
     List<Point> pointsInRect = _getPointsInRect(boundingRect);
     Rect titleBounding = _getTitleBounding(boundingRect, pointsInRect);
+
+    List<Widget> stackChildren = [
+      CustomPaint(
+        painter: BoundsBorderPainter(
+          points: pointsInRect,
+          color: color.withOpacity(0.85),
+        ),
+        child: Container(
+          width: boundingRect.width,
+          height: boundingRect.height,
+        ),
+      ),
+      Container(
+        width: boundingRect.width,
+        height: boundingRect.height,
+        color: color,
+        padding: const EdgeInsets.all(12.0),
+      ),
+    ];
+
+    if (showText) {
+      stackChildren.add(Positioned(
+        left: titleBounding.left,
+        child: Transform.rotate(
+          angle: 0 * pi / 180,
+          child: Container(
+            width: titleBounding.width,
+            height: boundingRect.height,
+            padding: const EdgeInsets.symmetric(horizontal: 0.0),
+            alignment: Alignment.center,
+            child: Text(
+              block.name.replaceAll(' ', '\n'),
+              softWrap: true,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12.0,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ));
+    }
+
     return Positioned(
       left: boundingRect.left,
       top: boundingRect.top,
@@ -105,50 +152,11 @@ class BlockWidget extends StatelessWidget {
               context,
               PageRouteBuilder(
                 pageBuilder: (_, __, ___) => BlockMap(
-                  block: block,
-                ),
+                      block: block,
+                    ),
               )),
           child: Stack(
-            children: <Widget>[
-              CustomPaint(
-                painter: BoundsBorderPainter(
-                  points: pointsInRect,
-                  color: color.withAlpha(0xCC),
-                ),
-                child: Container(
-                  width: boundingRect.width,
-                  height: boundingRect.height,
-                ),
-              ),
-              Container(
-                width: boundingRect.width,
-                height: boundingRect.height,
-                color: color.withAlpha(0xAA),
-                padding: const EdgeInsets.all(12.0),
-              ),
-              Positioned(
-                left: titleBounding.left,
-                child: Transform.rotate(
-                  angle: 0 * pi / 180,
-                  child: Container(
-                    width: titleBounding.width,
-                    height: boundingRect.height,
-                    padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                    alignment: Alignment.center,
-                    child: Text(
-                      block.name.replaceAll(' ', '\n'),
-                      softWrap: true,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 12.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            children: stackChildren,
           ),
         ),
       ),

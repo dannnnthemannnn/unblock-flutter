@@ -82,13 +82,14 @@ class _CityMapState extends State<CityMap> {
     );
   }
 
-  Widget _getCityListButton() {
-    Positioned(
+  Widget _getNeighborhoodListButton() {
+    return Positioned(
       top: overlayPadding,
-      left: overlayPadding,
+      right: overlayPadding,
       child: Container(
         width: overlayButtonSize,
         height: overlayButtonSize,
+        padding: const EdgeInsets.all(10.0,),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.black.withOpacity(overlayOpacity),
@@ -200,7 +201,7 @@ class _CityMapState extends State<CityMap> {
                       ),
                       _getOverlay(),
                       _getBackButton(),
-                      _getCityListButton(),
+                      _getNeighborhoodListButton(),
                     ],
                   );
                 } else {

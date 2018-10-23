@@ -22,6 +22,7 @@ class LogInState extends State<LogIn> {
 
   Future<void> _attempLoginWithFacebook() async {
     FacebookLogin facebookLogin = FacebookLogin();
+    print('is logged in? ' + (await facebookLogin.isLoggedIn).toString());
     var result = await facebookLogin.logInWithReadPermissions([
       'email',
       'public_profile',
@@ -33,8 +34,7 @@ class LogInState extends State<LogIn> {
             accessToken: result.accessToken.token,
           );
           print(await user.getIdToken());
-        }
-        catch (e) {
+        } catch (e) {
           print('Exception in firebase sign in');
           print(e);
           return;
@@ -91,80 +91,47 @@ class LogInState extends State<LogIn> {
     );
   }
 
-  Widget _getLogInForm() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 18.0),
-      child: Row(
-        children: <Widget>[
-          Expanded(child: Container()),
-          Expanded(
-            flex: 12,
-            child: Container(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    TextFormField(
-                      controller: usernameOrEmailController,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                      ),
-                      decoration: InputDecoration(
-                        labelText: 'Username/Email',
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    TextFormField(
-                      controller: passwordController,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                      ),
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        labelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Expanded(child: Container()),
-        ],
-      ),
-    );
-  }
-
   Widget _getLogInButton() {
     return Row(
       children: <Widget>[
         Expanded(child: Container()),
-        Expanded(
-          flex: 12,
-          child: GestureDetector(
-            onTap: _attempLoginWithFacebook,
-            child: Container(
-              height: 40.0,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(50.0),
+        GestureDetector(
+          onTap: _attempLoginWithFacebook,
+          child: Container(
+            height: 40.0,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(0x42, 0x67, 0xB2, 1.0),
+              borderRadius: BorderRadius.circular(50.0),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 26.0,
               ),
-              child: Text(
-                'Log In',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.black,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(
+                      top: 10.0,
+                      bottom: 10.0,
+                      right: 10.0,
+                    ),
+                    child: FittedBox(
+                      child: Image.asset(
+                        'assets/images/facebook_144.png',
+                      ),
+                    ),
+                  ),
+                  Text(
+                    'Continue with Facebook',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -223,7 +190,6 @@ class LogInState extends State<LogIn> {
             flex: 10,
             child: Container(),
           ),
-          _getLogInForm(),
           _getLogInButton(),
           _getSignUp(),
         ],

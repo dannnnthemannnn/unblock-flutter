@@ -4,11 +4,15 @@ import 'dart:ui' as ui;
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
+import 'package:unblock/protos/attraction.pb.dart';
 import 'package:unblock/protos/block.pb.dart';
+import 'package:unblock/block/attraction_info.dart';
 import 'package:unblock/block/attraction_widget.dart';
+import 'package:unblock/neighborhood/block_widget.dart';
 import 'package:unblock/common/zoomable_stack.dart';
 import 'package:unblock/common/map_data.dart';
 import 'package:unblock/common/map_provider_service.dart';
+import 'package:unblock/util/colors_util.dart';
 
 class BlockMap extends StatefulWidget {
   BlockMap({this.block}) : super();
@@ -22,6 +26,14 @@ class BlockMap extends StatefulWidget {
 class _BlockMapState extends State<BlockMap> {
   static const double overlayOpacity = 0.4;
   static const double overlayPadding = 20.0;
+  static const double overlayButtonSize = 50.0;
+
+  Attraction _selectedAttraction = null;
+
+  void _onAttractionSelected(Attraction attraction) {
+    setState(() => _selectedAttraction =
+        _selectedAttraction == attraction ? null : attraction);
+  }
 
   Widget _getTitle() {
     return Padding(
@@ -65,12 +77,38 @@ class _BlockMapState extends State<BlockMap> {
       top: overlayPadding,
       left: overlayPadding,
       child: Container(
+        width: overlayButtonSize,
+        height: overlayButtonSize,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.black.withOpacity(overlayOpacity),
         ),
         child: BackButton(
           color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget _getAttractionListButton() {
+    return Positioned(
+      top: overlayPadding,
+      right: overlayPadding,
+      child: Container(
+        width: overlayButtonSize,
+        height: overlayButtonSize,
+        padding: const EdgeInsets.all(
+          10.0,
+        ),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.black.withOpacity(overlayOpacity),
+        ),
+        child: FittedBox(
+          child: Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -88,7 +126,7 @@ class _BlockMapState extends State<BlockMap> {
 
   Widget _getBackground() {
     return Container(
-      color: Colors.black.withOpacity(0.2),
+      color: Colors.black.withOpacity(0.0),
     );
   }
 
@@ -128,6 +166,28 @@ class _BlockMapState extends State<BlockMap> {
     );
   }
 
+  List<Widget> _getAttractionWidgets(
+      BoxConstraints constraints, MapData mapData) {
+    return widget.block.attractions
+        .where((attraction) =>
+            attraction.status == AttractionStatus.ATTRACTION_LIVE)
+        .map((attraction) => AttractionWidget(
+              attraction: attraction,
+              constraints: constraints,
+              mapData: mapData,
+              attractionSelectedCallback: _onAttractionSelected,
+            ))
+        .toList();
+  }
+
+  Widget _getAttractionInfo() {
+    if (_selectedAttraction == null) {
+      return Container();
+    }
+
+    return AttractionInfo(attraction: _selectedAttraction);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -142,7 +202,7 @@ class _BlockMapState extends State<BlockMap> {
         );
         mapImage.image.resolve(ImageConfiguration())
           ..addListener(
-                  (ImageInfo image, _) => imageCompleter.complete(image.image));
+              (ImageInfo image, _) => imageCompleter.complete(image.image));
 
         Rect initialPositions = mapData.getInitialBoundingRect(
             widget.block.bounds.points, constraints);
@@ -158,15 +218,20 @@ class _BlockMapState extends State<BlockMap> {
                       children: [
                         _getMap(mapImage),
                         _getBackground(),
-                      ]
-                        ..addAll(widget.block.attractions.map((attraction) =>
-                            AttractionWidget(attraction: attraction,
-                              constraints: constraints,
-                              mapData: mapData,))),
+                        BlockWidget(
+                          block: widget.block,
+                          mapData: mapData,
+                          constraints: constraints,
+                          color: ColorsUtil.getRandomColor().withOpacity(0.2),
+                          showText: false,
+                        ),
+                      ]..addAll(_getAttractionWidgets(constraints, mapData)),
                       initialRect: initialPositions,
                     ),
                     _getOverlay(),
                     _getBackButton(),
+                    _getAttractionListButton(),
+                    _getAttractionInfo(),
                   ],
                 );
               } else {
