@@ -21,7 +21,7 @@ class AttractionWidget extends StatelessWidget {
   final BoxConstraints constraints;
   final Function attractionSelectedCallback;
 
-  Point _getLocationOffset() {
+  static Point getLocationOffset(MapData mapData, BoxConstraints constraints, Attraction attraction) {
     Point centerPixels =
         MapUtil.fromLatLngToPoint(mapData.center) * pow(2, mapData.zoom);
     double scale = constraints.maxWidth / mapData.width;
@@ -35,7 +35,7 @@ class AttractionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Point locationPixel = _getLocationOffset();
+    Point locationPixel = getLocationOffset(mapData, constraints, attraction);
     double markerWidth = 25.0;
     return Positioned(
       left: locationPixel.x - markerWidth / 2,

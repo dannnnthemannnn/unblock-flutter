@@ -13,8 +13,6 @@ class LogIn extends StatefulWidget {
 }
 
 class LogInState extends State<LogIn> {
-  final _formKey = GlobalKey<FormState>();
-
   final usernameOrEmailController = TextEditingController();
   final passwordController = TextEditingController();
 

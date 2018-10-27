@@ -1,18 +1,13 @@
-import 'dart:math';
-import 'dart:ui';
-
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:unblock/protos/attraction.pb.dart';
-import 'package:unblock/util/map_util.dart';
-import 'package:unblock/common/map_data.dart';
-import 'package:unblock/common/empty_expanded.dart';
 
 class AttractionInfo extends StatelessWidget {
   static const double horizontalMargin = 30.0;
   static const double verticalMargin = 20.0;
+  static const int mapFlex = 1;
+  static const int infoFlex = 2;
 
   AttractionInfo({
     this.attraction,
@@ -114,11 +109,11 @@ class AttractionInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          flex: 2,
+          flex: AttractionInfo.mapFlex,
           child: Container(),
         ),
         Expanded(
-          flex: 4,
+          flex: AttractionInfo.infoFlex,
           child: _getAttractionDisplay(),
         ),
       ],

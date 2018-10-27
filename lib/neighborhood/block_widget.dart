@@ -17,6 +17,7 @@ class BlockWidget extends StatelessWidget {
     this.constraints,
     this.color,
     this.showText = true,
+    this.navigateOnTouch = true,
   });
 
   final Block block;
@@ -24,6 +25,7 @@ class BlockWidget extends StatelessWidget {
   final BoxConstraints constraints;
   final Color color;
   final bool showText;
+  final bool navigateOnTouch;
 
   Rect _getBoundingRect() {
     List<Point> points =
@@ -148,13 +150,17 @@ class BlockWidget extends StatelessWidget {
           points: pointsInRect,
         ),
         child: GestureDetector(
-          onTap: () => Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (_, __, ___) => BlockMap(
-                      block: block,
-                    ),
-              )),
+          onTap: () {
+            if (navigateOnTouch) {
+              Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (_, __, ___) => BlockMap(
+                          block: block,
+                        ),
+                  ));
+            }
+          },
           child: Stack(
             children: stackChildren,
           ),

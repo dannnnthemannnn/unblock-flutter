@@ -4,10 +4,16 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 class ZoomableStack extends StatefulWidget {
-  ZoomableStack({this.children, this.initialRect});
+  ZoomableStack(
+      {this.children,
+      this.initialRect,
+      this.showPointScreenOffset,
+      this.showPointContentOffset});
 
   final List<Widget> children;
   final Rect initialRect;
+  final Offset showPointScreenOffset;
+  final Offset showPointContentOffset;
 
   @override
   createState() => _ZoomableStackState();
@@ -20,18 +26,22 @@ class _ZoomableStackState extends State<ZoomableStack> {
   Offset _startingPosition = Offset.zero;
   Offset _scaleCenter = Offset.zero;
   bool _initialPositionsSet = false;
+  Offset _showPointContentOffset;
+  Offset _oldPosition = Offset.zero;
+  double _oldScale = 1.0;
 
   void _calculateInitialPositions(BoxConstraints constraints) {
     double xScale = constraints.maxWidth / widget.initialRect.width;
     double yScale = constraints.maxHeight / widget.initialRect.height;
     _scale = min(xScale, yScale);
     _position = -(widget.initialRect.center -
-                Offset(constraints.maxWidth, constraints.maxHeight) / 2.0) *
-            _scale ;
+            Offset(constraints.maxWidth, constraints.maxHeight) / 2.0) *
+        _scale;
   }
 
   Widget _getStack() {
     return LayoutBuilder(builder: (context, constraints) {
+      _checkShowPoint(constraints);
       if (!_initialPositionsSet) {
         _calculateInitialPositions(constraints);
         _initialPositionsSet = true;
@@ -108,6 +118,59 @@ class _ZoomableStackState extends State<ZoomableStack> {
         ),
       );
     });
+  }
+
+  void _resetToShowPoint(BoxConstraints constraints) {
+    _oldPosition = _position;
+    _oldScale = _scale;
+    Offset constraintsOffset =
+        Offset(constraints.maxWidth, constraints.maxHeight);
+    _position = constraintsOffset / 2.0 * _scale -
+        constraintsOffset / 2.0 -
+        widget.showPointContentOffset * _scale +
+        widget.showPointScreenOffset;
+
+    double newScale;
+    if ((constraints.maxHeight - widget.showPointScreenOffset.dy) >
+        (constraints.maxHeight - widget.showPointContentOffset.dy) * _scale) {
+      newScale = (constraints.maxHeight - widget.showPointScreenOffset.dy) /
+          (constraints.maxHeight - widget.showPointContentOffset.dy);
+    }
+    if ((constraints.maxWidth - widget.showPointScreenOffset.dx) >
+        (constraints.maxWidth - widget.showPointContentOffset.dx) * _scale) {
+      newScale = max(
+          newScale,
+          (constraints.maxWidth - widget.showPointScreenOffset.dx) /
+              (constraints.maxWidth - widget.showPointContentOffset.dx));
+    }
+    if (widget.showPointScreenOffset.dy >
+        (widget.showPointContentOffset.dy * _scale)) {
+      newScale = max(
+          newScale,(widget.showPointScreenOffset.dy /
+          widget.showPointContentOffset.dy));
+    }
+    if (widget.showPointScreenOffset.dx >
+        (widget.showPointContentOffset.dx * _scale)) {
+      newScale = max(
+          newScale,
+          (widget.showPointScreenOffset.dx /
+              widget.showPointContentOffset.dx));
+    }
+    if (newScale != null) {
+      _scale = newScale;
+    }
+  }
+
+  void _checkShowPoint(BoxConstraints constraints) {
+    if (_showPointContentOffset != widget.showPointContentOffset) {
+      _showPointContentOffset = widget.showPointContentOffset;
+      if (_showPointContentOffset == null) {
+        _position = _oldPosition;
+        _scale = _oldScale;
+      } else {
+        _resetToShowPoint(constraints);
+      }
+    }
   }
 
   @override

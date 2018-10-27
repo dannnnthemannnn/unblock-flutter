@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui' as ui;
+import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,8 @@ class _BlockMapState extends State<BlockMap> {
   static const double overlayPadding = 20.0;
   static const double overlayButtonSize = 50.0;
 
-  Attraction _selectedAttraction = null;
+  final Color _blockColor = ColorsUtil.getRandomColor().withOpacity(0.2);
+  Attraction _selectedAttraction;
 
   void _onAttractionSelected(Attraction attraction) {
     setState(() => _selectedAttraction =
@@ -124,12 +126,6 @@ class _BlockMapState extends State<BlockMap> {
     );
   }
 
-  Widget _getBackground() {
-    return Container(
-      color: Colors.black.withOpacity(0.0),
-    );
-  }
-
   Widget _getLoadingBackground() {
     return Positioned(
       top: 0.0,
@@ -158,10 +154,10 @@ class _BlockMapState extends State<BlockMap> {
   Widget _getMap(Image map) {
     return Positioned.fill(
       child: Container(
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: map,
-        ),
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: map,
+          ),
       ),
     );
   }
@@ -186,6 +182,62 @@ class _BlockMapState extends State<BlockMap> {
     }
 
     return AttractionInfo(attraction: _selectedAttraction);
+  }
+
+  Widget _getDismissOverlay() {
+    return Positioned.fill(
+      child: GestureDetector(
+        onTap: () {
+          if (_selectedAttraction != null) {
+            setState(() => _selectedAttraction = null);
+          }
+        },
+        behavior: HitTestBehavior.opaque,
+        child: Container(),
+      ),
+    );
+  }
+
+  Widget _getZoomableStack(Image mapImage, MapData mapData,
+      BoxConstraints constraints, Rect initialPositions) {
+    Offset showPointScreenOffset;
+    Offset showPointContentOffset;
+    if (_selectedAttraction != null) {
+      showPointScreenOffset = Offset(
+          constraints.maxWidth / 2,
+          constraints.maxHeight *
+              (AttractionInfo.mapFlex /
+                  (AttractionInfo.mapFlex + AttractionInfo.infoFlex)) /
+              2);
+      Point attractionPoint = AttractionWidget.getLocationOffset(
+          mapData, constraints, _selectedAttraction);
+      showPointContentOffset = Offset(attractionPoint.x, attractionPoint.y);
+    }
+
+    List<Widget> stackChildren = [
+      _getMap(mapImage),
+      BlockWidget(
+        block: widget.block,
+        mapData: mapData,
+        constraints: constraints,
+        color: _blockColor,
+        showText: false,
+        navigateOnTouch: false,
+      ),
+    ];
+
+    if (_selectedAttraction != null) {
+      stackChildren.add(_getDismissOverlay());
+    }
+
+    stackChildren.addAll(_getAttractionWidgets(constraints, mapData));
+
+    return ZoomableStack(
+      children: stackChildren,
+      initialRect: initialPositions,
+      showPointContentOffset: showPointContentOffset,
+      showPointScreenOffset: showPointScreenOffset,
+    );
   }
 
   @override
@@ -214,20 +266,8 @@ class _BlockMapState extends State<BlockMap> {
               if (snapshot.hasData) {
                 return Stack(
                   children: [
-                    ZoomableStack(
-                      children: [
-                        _getMap(mapImage),
-                        _getBackground(),
-                        BlockWidget(
-                          block: widget.block,
-                          mapData: mapData,
-                          constraints: constraints,
-                          color: ColorsUtil.getRandomColor().withOpacity(0.2),
-                          showText: false,
-                        ),
-                      ]..addAll(_getAttractionWidgets(constraints, mapData)),
-                      initialRect: initialPositions,
-                    ),
+                    _getZoomableStack(
+                        mapImage, mapData, constraints, initialPositions),
                     _getOverlay(),
                     _getBackButton(),
                     _getAttractionListButton(),
