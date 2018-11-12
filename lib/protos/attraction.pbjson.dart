@@ -27,7 +27,6 @@ const CreateAttractionRequest_CreateAttractionInfo$json = const {
     const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'location', '3': 2, '4': 1, '5': 11, '6': '.com.unblock.proto.Point', '10': 'location'},
     const {'1': 'description', '3': 3, '4': 1, '5': 9, '10': 'description'},
-    const {'1': 'googlePlaceId', '3': 4, '4': 1, '5': 9, '10': 'googlePlaceId'},
   ],
 };
 
@@ -88,7 +87,37 @@ const Attraction$json = const {
     const {'1': 'name', '3': 4, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'description', '3': 5, '4': 1, '5': 9, '10': 'description'},
     const {'1': 'location', '3': 6, '4': 1, '5': 11, '6': '.com.unblock.proto.Point', '10': 'location'},
-    const {'1': 'googlePlaceId', '3': 7, '4': 1, '5': 9, '10': 'googlePlaceId'},
+  ],
+};
+
+const CreateAdminAttractionRequest$json = const {
+  '1': 'CreateAdminAttractionRequest',
+  '2': const [
+    const {'1': 'blockId', '3': 1, '4': 1, '5': 9, '10': 'blockId'},
+    const {'1': 'info', '3': 2, '4': 1, '5': 11, '6': '.com.unblock.proto.CreateAdminAttractionRequest.CreateAdminAttractionInfo', '10': 'info'},
+  ],
+  '3': const [CreateAdminAttractionRequest_CreateAdminAttractionInfo$json],
+};
+
+const CreateAdminAttractionRequest_CreateAdminAttractionInfo$json = const {
+  '1': 'CreateAdminAttractionInfo',
+  '2': const [
+    const {'1': 'googlePlaceId', '3': 1, '4': 1, '5': 9, '10': 'googlePlaceId'},
+  ],
+};
+
+const ListAdminAttractionsResponse$json = const {
+  '1': 'ListAdminAttractionsResponse',
+  '2': const [
+    const {'1': 'adminAttractions', '3': 1, '4': 3, '5': 11, '6': '.com.unblock.proto.AdminAttraction', '10': 'adminAttractions'},
+  ],
+};
+
+const AdminAttraction$json = const {
+  '1': 'AdminAttraction',
+  '2': const [
+    const {'1': 'attraction', '3': 1, '4': 1, '5': 11, '6': '.com.unblock.proto.Attraction', '10': 'attraction'},
+    const {'1': 'googlePlace', '3': 2, '4': 1, '5': 11, '6': '.com.unblock.proto.GooglePlace', '10': 'googlePlace'},
   ],
 };
 

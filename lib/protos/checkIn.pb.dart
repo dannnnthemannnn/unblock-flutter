@@ -6,13 +6,14 @@
 // ignore: UNUSED_SHOWN_NAME
 import 'dart:core' show int, bool, double, String, List, override;
 
+import 'package:fixnum/fixnum.dart';
 import 'package:protobuf/protobuf.dart';
 
 class CheckIn extends GeneratedMessage {
   static final BuilderInfo _i = new BuilderInfo('CheckIn')
     ..aOS(1, 'checkinId')
     ..aOS(2, 'attractionId')
-    ..aOS(3, 'userId')
+    ..aInt64(3, 'createdTime')
     ..hasRequiredFields = false
   ;
 
@@ -42,18 +43,44 @@ class CheckIn extends GeneratedMessage {
   bool hasAttractionId() => $_has(1);
   void clearAttractionId() => clearField(2);
 
-  String get userId => $_getS(2, '');
-  set userId(String v) { $_setString(2, v); }
-  bool hasUserId() => $_has(2);
-  void clearUserId() => clearField(3);
+  Int64 get createdTime => $_getI64(2);
+  set createdTime(Int64 v) { $_setInt64(2, v); }
+  bool hasCreatedTime() => $_has(2);
+  void clearCreatedTime() => clearField(3);
 }
 
 class _ReadonlyCheckIn extends CheckIn with ReadonlyMessageMixin {}
 
+class ListCheckInsForUserResponse extends GeneratedMessage {
+  static final BuilderInfo _i = new BuilderInfo('ListCheckInsForUserResponse')
+    ..pp<CheckIn>(1, 'checkIns', PbFieldType.PM, CheckIn.$checkItem, CheckIn.create)
+    ..hasRequiredFields = false
+  ;
+
+  ListCheckInsForUserResponse() : super();
+  ListCheckInsForUserResponse.fromBuffer(List<int> i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromBuffer(i, r);
+  ListCheckInsForUserResponse.fromJson(String i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromJson(i, r);
+  ListCheckInsForUserResponse clone() => new ListCheckInsForUserResponse()..mergeFromMessage(this);
+  BuilderInfo get info_ => _i;
+  static ListCheckInsForUserResponse create() => new ListCheckInsForUserResponse();
+  static PbList<ListCheckInsForUserResponse> createRepeated() => new PbList<ListCheckInsForUserResponse>();
+  static ListCheckInsForUserResponse getDefault() {
+    if (_defaultInstance == null) _defaultInstance = new _ReadonlyListCheckInsForUserResponse();
+    return _defaultInstance;
+  }
+  static ListCheckInsForUserResponse _defaultInstance;
+  static void $checkItem(ListCheckInsForUserResponse v) {
+    if (v is! ListCheckInsForUserResponse) checkItemFailed(v, 'ListCheckInsForUserResponse');
+  }
+
+  List<CheckIn> get checkIns => $_getList(0);
+}
+
+class _ReadonlyListCheckInsForUserResponse extends ListCheckInsForUserResponse with ReadonlyMessageMixin {}
+
 class CreateCheckInRequest extends GeneratedMessage {
   static final BuilderInfo _i = new BuilderInfo('CreateCheckInRequest')
     ..aOS(1, 'attractionId')
-    ..aOS(2, 'userId')
     ..hasRequiredFields = false
   ;
 
@@ -77,11 +104,6 @@ class CreateCheckInRequest extends GeneratedMessage {
   set attractionId(String v) { $_setString(0, v); }
   bool hasAttractionId() => $_has(0);
   void clearAttractionId() => clearField(1);
-
-  String get userId => $_getS(1, '');
-  set userId(String v) { $_setString(1, v); }
-  bool hasUserId() => $_has(1);
-  void clearUserId() => clearField(2);
 }
 
 class _ReadonlyCreateCheckInRequest extends CreateCheckInRequest with ReadonlyMessageMixin {}

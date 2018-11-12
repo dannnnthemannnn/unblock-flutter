@@ -6,17 +6,14 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:unblock/protos/city.pb.dart';
+import 'package:unblock/services/endpoint_service.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UnblockService {
-  static const String unblockUrl = 'http://10.0.2.2:8080';
-
-  //static const String unblockUrl = 'https://unblock-backend.herokuapp.com';
-
   static Future<List<City>> getCities() async {
     http.Response response = await http.get(
-      '$unblockUrl/v1/cities',
+      '${EndpointService.unblockUrl}/v1/cities',
       headers: {
         HttpHeaders.authorizationHeader:
             await (await FirebaseAuth.instance.currentUser()).getIdToken(),
@@ -33,7 +30,7 @@ class UnblockService {
 
   static Image getStaticImage(String path) {
     return Image.network(
-      '$unblockUrl/static/images/$path'
+      '${EndpointService.unblockUrl}/static/images/$path'
     );
   }
 }

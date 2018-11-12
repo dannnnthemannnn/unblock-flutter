@@ -9,6 +9,7 @@ import 'dart:core' show int, bool, double, String, List, override;
 import 'package:protobuf/protobuf.dart';
 
 import 'point.pb.dart';
+import 'google_place.pb.dart';
 
 import 'attraction.pbenum.dart';
 
@@ -19,7 +20,6 @@ class CreateAttractionRequest_CreateAttractionInfo extends GeneratedMessage {
     ..aOS(1, 'name')
     ..a<Point>(2, 'location', PbFieldType.OM, Point.getDefault, Point.create)
     ..aOS(3, 'description')
-    ..aOS(4, 'googlePlaceId')
     ..hasRequiredFields = false
   ;
 
@@ -53,11 +53,6 @@ class CreateAttractionRequest_CreateAttractionInfo extends GeneratedMessage {
   set description(String v) { $_setString(2, v); }
   bool hasDescription() => $_has(2);
   void clearDescription() => clearField(3);
-
-  String get googlePlaceId => $_getS(3, '');
-  set googlePlaceId(String v) { $_setString(3, v); }
-  bool hasGooglePlaceId() => $_has(3);
-  void clearGooglePlaceId() => clearField(4);
 }
 
 class _ReadonlyCreateAttractionRequest_CreateAttractionInfo extends CreateAttractionRequest_CreateAttractionInfo with ReadonlyMessageMixin {}
@@ -313,7 +308,6 @@ class Attraction extends GeneratedMessage {
     ..aOS(4, 'name')
     ..aOS(5, 'description')
     ..a<Point>(6, 'location', PbFieldType.OM, Point.getDefault, Point.create)
-    ..aOS(7, 'googlePlaceId')
     ..hasRequiredFields = false
   ;
 
@@ -362,12 +356,136 @@ class Attraction extends GeneratedMessage {
   set location(Point v) { setField(6, v); }
   bool hasLocation() => $_has(5);
   void clearLocation() => clearField(6);
-
-  String get googlePlaceId => $_getS(6, '');
-  set googlePlaceId(String v) { $_setString(6, v); }
-  bool hasGooglePlaceId() => $_has(6);
-  void clearGooglePlaceId() => clearField(7);
 }
 
 class _ReadonlyAttraction extends Attraction with ReadonlyMessageMixin {}
+
+class CreateAdminAttractionRequest_CreateAdminAttractionInfo extends GeneratedMessage {
+  static final BuilderInfo _i = new BuilderInfo('CreateAdminAttractionRequest_CreateAdminAttractionInfo')
+    ..aOS(1, 'googlePlaceId')
+    ..hasRequiredFields = false
+  ;
+
+  CreateAdminAttractionRequest_CreateAdminAttractionInfo() : super();
+  CreateAdminAttractionRequest_CreateAdminAttractionInfo.fromBuffer(List<int> i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromBuffer(i, r);
+  CreateAdminAttractionRequest_CreateAdminAttractionInfo.fromJson(String i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromJson(i, r);
+  CreateAdminAttractionRequest_CreateAdminAttractionInfo clone() => new CreateAdminAttractionRequest_CreateAdminAttractionInfo()..mergeFromMessage(this);
+  BuilderInfo get info_ => _i;
+  static CreateAdminAttractionRequest_CreateAdminAttractionInfo create() => new CreateAdminAttractionRequest_CreateAdminAttractionInfo();
+  static PbList<CreateAdminAttractionRequest_CreateAdminAttractionInfo> createRepeated() => new PbList<CreateAdminAttractionRequest_CreateAdminAttractionInfo>();
+  static CreateAdminAttractionRequest_CreateAdminAttractionInfo getDefault() {
+    if (_defaultInstance == null) _defaultInstance = new _ReadonlyCreateAdminAttractionRequest_CreateAdminAttractionInfo();
+    return _defaultInstance;
+  }
+  static CreateAdminAttractionRequest_CreateAdminAttractionInfo _defaultInstance;
+  static void $checkItem(CreateAdminAttractionRequest_CreateAdminAttractionInfo v) {
+    if (v is! CreateAdminAttractionRequest_CreateAdminAttractionInfo) checkItemFailed(v, 'CreateAdminAttractionRequest_CreateAdminAttractionInfo');
+  }
+
+  String get googlePlaceId => $_getS(0, '');
+  set googlePlaceId(String v) { $_setString(0, v); }
+  bool hasGooglePlaceId() => $_has(0);
+  void clearGooglePlaceId() => clearField(1);
+}
+
+class _ReadonlyCreateAdminAttractionRequest_CreateAdminAttractionInfo extends CreateAdminAttractionRequest_CreateAdminAttractionInfo with ReadonlyMessageMixin {}
+
+class CreateAdminAttractionRequest extends GeneratedMessage {
+  static final BuilderInfo _i = new BuilderInfo('CreateAdminAttractionRequest')
+    ..aOS(1, 'blockId')
+    ..a<CreateAdminAttractionRequest_CreateAdminAttractionInfo>(2, 'info', PbFieldType.OM, CreateAdminAttractionRequest_CreateAdminAttractionInfo.getDefault, CreateAdminAttractionRequest_CreateAdminAttractionInfo.create)
+    ..hasRequiredFields = false
+  ;
+
+  CreateAdminAttractionRequest() : super();
+  CreateAdminAttractionRequest.fromBuffer(List<int> i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromBuffer(i, r);
+  CreateAdminAttractionRequest.fromJson(String i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromJson(i, r);
+  CreateAdminAttractionRequest clone() => new CreateAdminAttractionRequest()..mergeFromMessage(this);
+  BuilderInfo get info_ => _i;
+  static CreateAdminAttractionRequest create() => new CreateAdminAttractionRequest();
+  static PbList<CreateAdminAttractionRequest> createRepeated() => new PbList<CreateAdminAttractionRequest>();
+  static CreateAdminAttractionRequest getDefault() {
+    if (_defaultInstance == null) _defaultInstance = new _ReadonlyCreateAdminAttractionRequest();
+    return _defaultInstance;
+  }
+  static CreateAdminAttractionRequest _defaultInstance;
+  static void $checkItem(CreateAdminAttractionRequest v) {
+    if (v is! CreateAdminAttractionRequest) checkItemFailed(v, 'CreateAdminAttractionRequest');
+  }
+
+  String get blockId => $_getS(0, '');
+  set blockId(String v) { $_setString(0, v); }
+  bool hasBlockId() => $_has(0);
+  void clearBlockId() => clearField(1);
+
+  CreateAdminAttractionRequest_CreateAdminAttractionInfo get info => $_getN(1);
+  set info(CreateAdminAttractionRequest_CreateAdminAttractionInfo v) { setField(2, v); }
+  bool hasInfo() => $_has(1);
+  void clearInfo() => clearField(2);
+}
+
+class _ReadonlyCreateAdminAttractionRequest extends CreateAdminAttractionRequest with ReadonlyMessageMixin {}
+
+class ListAdminAttractionsResponse extends GeneratedMessage {
+  static final BuilderInfo _i = new BuilderInfo('ListAdminAttractionsResponse')
+    ..pp<AdminAttraction>(1, 'adminAttractions', PbFieldType.PM, AdminAttraction.$checkItem, AdminAttraction.create)
+    ..hasRequiredFields = false
+  ;
+
+  ListAdminAttractionsResponse() : super();
+  ListAdminAttractionsResponse.fromBuffer(List<int> i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromBuffer(i, r);
+  ListAdminAttractionsResponse.fromJson(String i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromJson(i, r);
+  ListAdminAttractionsResponse clone() => new ListAdminAttractionsResponse()..mergeFromMessage(this);
+  BuilderInfo get info_ => _i;
+  static ListAdminAttractionsResponse create() => new ListAdminAttractionsResponse();
+  static PbList<ListAdminAttractionsResponse> createRepeated() => new PbList<ListAdminAttractionsResponse>();
+  static ListAdminAttractionsResponse getDefault() {
+    if (_defaultInstance == null) _defaultInstance = new _ReadonlyListAdminAttractionsResponse();
+    return _defaultInstance;
+  }
+  static ListAdminAttractionsResponse _defaultInstance;
+  static void $checkItem(ListAdminAttractionsResponse v) {
+    if (v is! ListAdminAttractionsResponse) checkItemFailed(v, 'ListAdminAttractionsResponse');
+  }
+
+  List<AdminAttraction> get adminAttractions => $_getList(0);
+}
+
+class _ReadonlyListAdminAttractionsResponse extends ListAdminAttractionsResponse with ReadonlyMessageMixin {}
+
+class AdminAttraction extends GeneratedMessage {
+  static final BuilderInfo _i = new BuilderInfo('AdminAttraction')
+    ..a<Attraction>(1, 'attraction', PbFieldType.OM, Attraction.getDefault, Attraction.create)
+    ..a<GooglePlace>(2, 'googlePlace', PbFieldType.OM, GooglePlace.getDefault, GooglePlace.create)
+    ..hasRequiredFields = false
+  ;
+
+  AdminAttraction() : super();
+  AdminAttraction.fromBuffer(List<int> i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromBuffer(i, r);
+  AdminAttraction.fromJson(String i, [ExtensionRegistry r = ExtensionRegistry.EMPTY]) : super.fromJson(i, r);
+  AdminAttraction clone() => new AdminAttraction()..mergeFromMessage(this);
+  BuilderInfo get info_ => _i;
+  static AdminAttraction create() => new AdminAttraction();
+  static PbList<AdminAttraction> createRepeated() => new PbList<AdminAttraction>();
+  static AdminAttraction getDefault() {
+    if (_defaultInstance == null) _defaultInstance = new _ReadonlyAdminAttraction();
+    return _defaultInstance;
+  }
+  static AdminAttraction _defaultInstance;
+  static void $checkItem(AdminAttraction v) {
+    if (v is! AdminAttraction) checkItemFailed(v, 'AdminAttraction');
+  }
+
+  Attraction get attraction => $_getN(0);
+  set attraction(Attraction v) { setField(1, v); }
+  bool hasAttraction() => $_has(0);
+  void clearAttraction() => clearField(1);
+
+  GooglePlace get googlePlace => $_getN(1);
+  set googlePlace(GooglePlace v) { setField(2, v); }
+  bool hasGooglePlace() => $_has(1);
+  void clearGooglePlace() => clearField(2);
+}
+
+class _ReadonlyAdminAttraction extends AdminAttraction with ReadonlyMessageMixin {}
 
