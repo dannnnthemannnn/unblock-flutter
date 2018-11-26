@@ -13,11 +13,9 @@ class AttractionInfo extends StatefulWidget {
 
   AttractionInfo({
     this.attraction,
-    this.checkIn,
   });
 
   final Attraction attraction;
-  final CheckIn checkIn;
 
   @override
   createState() => _AttractionInfoState();
@@ -31,12 +29,14 @@ class _AttractionInfoState extends State<AttractionInfo> {
 
   @override
   initState() {
-    _checkIn = widget.checkIn;
+    super.initState();
+    _checkIn = CheckInService.checkInService.getCheckIn(widget.attraction.id);
   }
 
   Future<void> _checkInToAttraction() async {
     try {
-      _checkIn = await CheckInService.createCheckIn(this.widget.attraction.id);
+      _checkIn = await CheckInService.checkInService
+          .createCheckIn(this.widget.attraction.id);
       print(_checkIn);
     } catch (e) {
       print('Exception in creating a check in:');

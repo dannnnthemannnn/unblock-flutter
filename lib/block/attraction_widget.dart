@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:unblock/protos/attraction.pb.dart';
 import 'package:unblock/util/map_util.dart';
 import 'package:unblock/common/map_data.dart';
+import 'package:unblock/services/checkIn_service.dart';
 
 class AttractionWidget extends StatelessWidget {
   AttractionWidget({
@@ -45,7 +46,7 @@ class AttractionWidget extends StatelessWidget {
         child: Icon(
           FontAwesomeIcons.mapMarkerAlt,
           size: markerWidth,
-          color: Random().nextBool()
+          color: CheckInService.checkInService.getCheckIn(attraction.id) != null
               ? Colors.green.withOpacity(1.0)
               : Colors.blueGrey,
         ),

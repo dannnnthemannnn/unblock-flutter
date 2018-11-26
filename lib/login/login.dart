@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:unblock/login/sign_up.dart';
+import 'package:unblock/services/checkIn_service.dart';
 
 class LogIn extends StatefulWidget {
   @override
@@ -38,6 +39,7 @@ class LogInState extends State<LogIn> {
           return;
         }
 
+        await CheckInService.checkInService.loadCheckIns();
         Navigator.pushReplacementNamed(context, "/cities");
         break;
       case FacebookLoginStatus.error:

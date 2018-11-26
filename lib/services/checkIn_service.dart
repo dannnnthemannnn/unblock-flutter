@@ -11,7 +11,16 @@ import 'package:unblock/services/endpoint_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class CheckInService {
-  static Future<List<CheckIn>> getCities() async {
+
+  static CheckInService checkInService = CheckInService();
+
+  Map<String, CheckIn> _checkInLookup;
+
+  CheckIn getCheckIn(String attractionId) {
+    return _checkInLookup[attractionId];
+  }
+
+  Future<void> loadCheckIns() async {
     http.Response response = await http.get(
       '${EndpointService.unblockUrl}/v1/checkIns',
       headers: {
@@ -23,13 +32,15 @@ class CheckInService {
     print('Response headers: ${response.headers}');
     print('Response status: ${response.statusCode}');
     if (response.statusCode == 200) {
-      return ListCheckInsForUserResponse.fromBuffer(response.bodyBytes)
+      List<CheckIn> checkIns = ListCheckInsForUserResponse.fromBuffer(response.bodyBytes)
           .checkIns;
+      _checkInLookup = Map.fromIterable(checkIns, key: (checkIn) => checkIn.attractionId, value: (checkIn) => checkIn);
+    } else {
+      throw HttpException('List checkIns failed');
     }
-    throw HttpException('List checkIns failed');
   }
 
-  static Future<CheckIn> createCheckIn(String attractionId) async {
+  Future<CheckIn> createCheckIn(String attractionId) async {
     CreateCheckInRequest request = CreateCheckInRequest()
       ..attractionId = attractionId;
     print(request);
@@ -46,7 +57,9 @@ class CheckInService {
     print('Response headers: ${response.headers}');
     print('Response status: ${response.statusCode}');
     if (response.statusCode == 200) {
-      return CheckIn.fromBuffer(response.bodyBytes);
+      CheckIn checkIn = CheckIn.fromBuffer(response.bodyBytes);
+      _checkInLookup[attractionId] = checkIn;
+      return checkIn;
     }
     throw HttpException('List checkIns failed');
   }
